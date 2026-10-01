@@ -1,0 +1,651 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ----------------------------------------------------
+// ENUMS
+// ----------------------------------------------------
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum TaskCategory {
+  DSA
+  WEB_DEV
+  PROJECT
+  CS
+  JOB
+  PERSONAL
+  REVISION
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ProblemStatus {
+  NOT_STARTED
+  ATTEMPTED
+  HINT_USED
+  SOLVED
+  MASTERED
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum DSAProgressionLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  INTERVIEW
+}
+
+enum JobStatus {
+  WISHLIST
+  APPLIED
+  REFERRED
+  OA
+  INTERVIEW
+  TECHNICAL_ROUND
+  HR_ROUND
+  OFFER
+  REJECTED
+  WITHDRAWN
+}
+
+enum JobWorkplaceType {
+  REMOTE
+  HYBRID
+  ONSITE
+}
+
+enum ExperienceLevel {
+  FRESHER
+  ZERO_TO_ONE
+  ONE_TO_TWO
+  SENIOR
+}
+
+enum AIMessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+enum AIMode {
+  EXPLAIN
+  HINT
+  DEBUG
+  INTERVIEW
+  QUIZ
+  SEARCH_MY_NOTES
+  CREATE_PLAN
+}
+
+// ----------------------------------------------------
+// CORE USER & AUTHENTICATION
+// ----------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Profile & Goals
+  targetRole       String   @default("SDE-1")
+  targetCompanies  String[] @default(["Amazon", "Microsoft", "Google", "Uber"])
+  skills           String[] @default(["JavaScript", "TypeScript", "React", "Node.js", "C++", "DSA"])
+  experienceYears  Float    @default(0)
+  graduationYear   Int      @default(2025)
+  preferredLocations String[] @default(["Bangalore", "Hyderabad", "Remote"])
+  dailyStudyTarget Float    @default(5.0) // hours
+  goalTitle        String   @default("Become Amazon SDE-1 interview ready")
+  currentStreak    Int      @default(12)
+  longestStreak    Int      @default(24)
+
+  // Relationships
+  roadmaps         Roadmap[]
+  todos            Todo[]
+  problemAttempts  ProblemAttempt[]
+  revisions        Revision[]
+  learningProgress LearningProgress[]
+  notes            Note[]
+  projects         Project[]
+  studySessions    StudySession[]
+  habits           Habit[]
+  moods            Mood[]
+  jobApplications  JobApplication[]
+  savedJobs        Job[]
+  aiConversations  AIConversation[]
+  preferences      UserPreference?
+  resumes          Resume[]
+
+  @@index([email])
+}
+
+model UserPreference {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme           String   @default("dark")
+  soundEnabled    Boolean  @default(true)
+  notifications   Boolean  @default(true)
+  notifyRevision  Boolean  @default(true)
+  notifyInterview Boolean  @default(true)
+  notifyTaskDue   Boolean  @default(true)
+  pomodoroWorkMin Int      @default(25)
+  pomodoroBreakMin Int     @default(5)
+  updatedAt       DateTime @updatedAt
+}
+
+// ----------------------------------------------------
+// 100-DAY ROADMAP
+// ----------------------------------------------------
+
+model Roadmap {
+  id               String       @id @default(cuid())
+  userId           String
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title            String       @default("100-Day SDE-1 Preparation Roadmap")
+  goal             String       @default("Crack FAANG SDE-1")
+  totalDays        Int          @default(100)
+  startDate        DateTime     @default(now())
+  endDate          DateTime
+  dailyStudyHours  Float        @default(5.0)
+  currentDayNumber Int          @default(23)
+  isCompleted      Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  days             RoadmapDay[]
+
+  @@index([userId])
+}
+
+model RoadmapDay {
+  id             String    @id @default(cuid())
+  roadmapId      String
+  roadmap        Roadmap   @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  dayNumber      Int
+  phaseTitle     String    // e.g. "Phase 2: Core Data Structures"
+  theme          String    // e.g. "Binary Search & React Hooks"
+  dsaFocus       String?
+  webDevFocus    String?
+  csFocus        String?
+  lldFocus       String?
+  hldFocus       String?
+  genAiFocus     String?
+  projectsFocus  String?
+  appsFocus      String?
+  revisionFocus  String?
+  targetHours    Float     @default(5.0)
+  isCompleted    Boolean   @default(false)
+  completedAt    DateTime?
+  notes          String?
+  
+  todos          Todo[]
+
+  @@unique([roadmapId, dayNumber])
+  @@index([roadmapId])
+}
+
+// ----------------------------------------------------
+// DSA KNOWLEDGE TREE & PROBLEMS
+// ----------------------------------------------------
+
+model Topic {
+  id               String              @id @default(cuid())
+  category         String              @default("DSA") // "DSA" or "WEB_DEV"
+  parentTopicId    String?
+  parentTopic      Topic?              @relation("TopicHierarchy", fields: [parentTopicId], references: [id])
+  subTopics        Topic[]             @relation("TopicHierarchy")
+  name             String
+  slug             String              @unique
+  description      String?
+  progressionLevel DSAProgressionLevel @default(BEGINNER)
+  orderIndex       Int                 @default(0)
+
+  // Rich learning material
+  theory           String?             @db.Text
+  templates        String?             @db.Text
+  timeComplexity   String?
+  spaceComplexity  String?
+
+  patterns         Pattern[]
+  problems         Problem[]
+  lessons          Lesson[]
+  learningProgress LearningProgress[]
+  notes            Note[]
+
+  @@index([category, slug])
+}
+
+model Pattern {
+  id          String    @id @default(cuid())
+  topicId     String
+  topic       Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  name        String
+  description String?   @db.Text
+  template    String?   @db.Text
+  keyTriggers String[]  @default([])
+  problems    ProblemPattern[]
+
+  @@index([topicId])
+}
+
+model Problem {
+  id              String           @id @default(cuid())
+  topicId         String
+  topic           Topic            @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  name            String
+  platform        String           @default("LeetCode")
+  url             String
+  difficulty      Difficulty       @default(MEDIUM)
+  companyTags     String[]         @default([])
+  frequency       Int              @default(5) // 1-10
+  status          ProblemStatus    @default(NOT_STARTED)
+  confidence      Int              @default(3) // 1-5
+  timeTakenMin    Int?
+  attemptsCount   Int              @default(0)
+  solutionNotes   String?          @db.Text
+  codeSnippet     String?          @db.Text
+  mistakes        String?          @db.Text
+  lastAttemptedAt DateTime?
+  nextRevisionAt  DateTime?
+
+  patterns        ProblemPattern[]
+  attempts        ProblemAttempt[]
+  revisions       Revision[]
+
+  @@index([topicId, status])
+  @@index([nextRevisionAt])
+  @@index([difficulty])
+}
+
+model ProblemPattern {
+  problemId String
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  patternId String
+  pattern   Pattern @relation(fields: [patternId], references: [id], onDelete: Cascade)
+
+  @@id([problemId, patternId])
+}
+
+model ProblemAttempt {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problemId    String
+  problem      Problem   @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  solved       Boolean   @default(false)
+  solvedNoHelp Boolean   @default(false)
+  hintUsed     Boolean   @default(false)
+  viewedSol    Boolean   @default(false)
+  timeTakenMin Int
+  confidence   Int       // 1 to 5
+  notes        String?   @db.Text
+  mistakes     String?   @db.Text
+  attemptedAt  DateTime  @default(now())
+
+  @@index([userId, problemId])
+  @@index([attemptedAt])
+}
+
+model Revision {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problemId       String
+  problem         Problem   @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  scheduledFor    DateTime
+  completedAt     DateTime?
+  repetitionCount Int       @default(0)
+  intervalDays    Int       @default(1)
+  easeFactor      Float     @default(2.5) // SuperMemo SM-2
+  confidence      Int       @default(3)
+  isDue           Boolean   @default(false)
+
+  @@index([userId, scheduledFor])
+}
+
+// ----------------------------------------------------
+// WEB DEV & LESSONS
+// ----------------------------------------------------
+
+model Lesson {
+  id          String   @id @default(cuid())
+  topicId     String
+  topic       Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  title       String
+  content     String   @db.Text
+  practiceUrl String?
+  orderIndex  Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([topicId])
+}
+
+model LearningProgress {
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topicId        String
+  topic          Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  isCompleted    Boolean   @default(false)
+  confidence     Int       @default(3) // 1-5
+  lastStudiedAt  DateTime  @default(now())
+  nextRevisionAt DateTime?
+  notes          String?   @db.Text
+
+  @@unique([userId, topicId])
+  @@index([userId])
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topicId   String?
+  topic     Topic?   @relation(fields: [topicId], references: [id])
+  title     String
+  content   String   @db.Text
+  tags      String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// ----------------------------------------------------
+// PROJECTS
+// ----------------------------------------------------
+
+model Project {
+  id             String        @id @default(cuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  description    String        @db.Text
+  techStack      String[]      @default([])
+  githubUrl      String?
+  liveUrl        String?
+  startDate      DateTime      @default(now())
+  deadline       DateTime?
+  progress       Int           @default(0) // 0-100%
+  documentation  String?       @db.Text
+  resumeBullet   String?       @db.Text
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  tasks          ProjectTask[]
+  todos          Todo[]
+
+  @@index([userId])
+}
+
+model ProjectTask {
+  id          String    @id @default(cuid())
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  isCompleted Boolean   @default(false)
+  isBug       Boolean   @default(false)
+  isFeature   Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  @@index([projectId])
+}
+
+// ----------------------------------------------------
+// TASK MANAGER — FULL CRUD
+// ----------------------------------------------------
+
+model Todo {
+  id            String       @id @default(cuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  description   String?      @db.Text
+  category      TaskCategory @default(DSA)
+  priority      TaskPriority @default(MEDIUM)
+  status        TaskStatus   @default(TODO)
+  dueDate       DateTime?
+  dueTime       String?      // e.g. "14:00"
+  estimatedTime Int?         // in minutes
+  actualTime    Int?         // in minutes
+  recurring     String?      // e.g. "DAILY", "WEEKLY", null
+  tags          String[]     @default([])
+  
+  projectId     String?
+  project       Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  
+  roadmapDayId  String?
+  roadmapDay    RoadmapDay?  @relation(fields: [roadmapDayId], references: [id], onDelete: SetNull)
+
+  completedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([userId, status])
+  @@index([userId, dueDate])
+  @@index([userId, category])
+}
+
+// ----------------------------------------------------
+// STUDY SESSIONS & FOCUS TIMER
+// ----------------------------------------------------
+
+model StudySession {
+  id            String       @id @default(cuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startTime     DateTime     @default(now())
+  endTime       DateTime?
+  durationMin   Int          // completed minutes
+  topic         String       // e.g. "Binary Search Problems"
+  category      TaskCategory @default(DSA)
+  productivity  Int          @default(4) // 1-5
+  notes         String?      @db.Text
+  createdAt     DateTime     @default(now())
+
+  @@index([userId, startTime])
+}
+
+// ----------------------------------------------------
+// HABITS & MOOD
+// ----------------------------------------------------
+
+model Habit {
+  id            String     @id @default(cuid())
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String     // e.g. "Wake up at 6:30 AM", "Solve 2 DSA problems"
+  description   String?
+  targetDays    Int[]      @default([0,1,2,3,4,5,6]) // 0=Sun, 6=Sat
+  currentStreak Int        @default(0)
+  longestStreak Int        @default(0)
+  createdAt     DateTime   @default(now())
+
+  logs          HabitLog[]
+
+  @@index([userId])
+}
+
+model HabitLog {
+  id          String   @id @default(cuid())
+  habitId     String
+  habit       Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  date        DateTime @db.Date
+  completed   Boolean  @default(true)
+  loggedAt    DateTime @default(now())
+
+  @@unique([habitId, date])
+  @@index([habitId])
+}
+
+model Mood {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score      Int      // 1-5 (1=terrible, 2=low, 3=normal, 4=good, 5=excellent)
+  energy     Int?     // 1-5
+  stress     Int?     // 1-5
+  sleepHours Float?
+  note       String?  @db.Text
+  date       DateTime @default(now()) @db.Date
+
+  @@unique([userId, date])
+  @@index([userId, date])
+}
+
+// ----------------------------------------------------
+// JOB APPLICATIONS & ATS TRACKER
+// ----------------------------------------------------
+
+model Job {
+  id              String            @id @default(cuid())
+  userId          String?
+  user            User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  company         String
+  role            String
+  location        String
+  workplaceType   JobWorkplaceType  @default(HYBRID)
+  experienceLevel ExperienceLevel   @default(FRESHER)
+  isProductCo     Boolean           @default(true)
+  salaryRange     String?
+  techStack       String[]          @default([])
+  jobUrl          String?
+  deadline        DateTime?
+  description     String?           @db.Text
+  isDemoData      Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+
+  applications    JobApplication[]
+
+  @@index([company, role])
+  @@index([isDemoData])
+}
+
+model JobApplication {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobId           String?
+  job             Job?        @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  company         String
+  role            String
+  location        String
+  jobUrl          String?
+  applicationDate DateTime    @default(now())
+  source          String      @default("LinkedIn") // LinkedIn, Referral, Careers, etc.
+  referralName    String?
+  status          JobStatus   @default(APPLIED)
+  recruiter       String?
+  salary          String?
+  jobDescription  String?     @db.Text
+  notes           String?     @db.Text
+  followUpDate    DateTime?
+  oaDate          DateTime?
+  interviewDate   DateTime?
+  offerStatus     String?     // "Pending", "Accepted", "Declined"
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  interviews      Interview[]
+
+  @@index([userId, status])
+  @@index([userId, followUpDate])
+}
+
+model Interview {
+  id            String         @id @default(cuid())
+  applicationId String
+  application   JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  roundName     String         // e.g. "DSA Round 1", "System Design", "Bar Raiser"
+  scheduledFor  DateTime
+  interviewer   String?
+  meetingLink   String?
+  feedbackNotes String?        @db.Text
+  passed        Boolean?
+  createdAt     DateTime       @default(now())
+
+  @@index([applicationId])
+}
+
+// ----------------------------------------------------
+// AI MENTOR, CONVERSATIONS & MEMORY
+// ----------------------------------------------------
+
+model AIConversation {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String      @default("DSA Mentorship Session")
+  mode      AIMode      @default(EXPLAIN)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  messages  AIMessage[]
+
+  @@index([userId])
+}
+
+model AIMessage {
+  id             String         @id @default(cuid())
+  conversationId String
+  conversation   AIConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           AIMessageRole  @default(USER)
+  content        String         @db.Text
+  contextData    Json?          // Snapshot of user weaknesses, topic, etc.
+  createdAt      DateTime       @default(now())
+
+  @@index([conversationId])
+}
+
+// ----------------------------------------------------
+// RESUME & INTERVIEW PREP
+// ----------------------------------------------------
+
+model Resume {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String   @default("SDE-1 Resume 2025")
+  skills      String[] @default([])
+  experience  Json     @default("[]") // Array of { company, role, dates, bullets }
+  projects    Json     @default("[]") // Array of { name, tech, bullets, github }
+  education   Json     @default("[]")
+  aiFeedback  String?  @db.Text
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}

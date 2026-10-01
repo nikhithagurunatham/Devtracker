@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: devtrack_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: devtrack_ai
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: devtrack_web
+    restart: always
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_URL: postgresql://postgres:postgrespassword@db:5432/devtrack_ai
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: devtrack-super-secret-key-change-in-production-min-32-chars
+      NODE_ENV: production
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

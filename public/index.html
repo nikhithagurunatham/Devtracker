@@ -1,0 +1,3248 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevTrack AI — Personal Developer Learning, Prep & ATS Operating System</title>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            slate: {
+              850: '#151f33',
+              950: '#030712',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f3f4f6; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #030712; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    .animate-fade-in { animation: fadeIn 0.2s ease-out forwards; }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(4px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body className="min-h-screen bg-slate-950 flex">
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside id="main-sidebar" class="w-64 bg-slate-950 border-r border-slate-800/80 flex flex-col justify-between h-screen sticky top-0 z-30 select-none hidden md:flex">
+    <!-- Brand -->
+    <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-lg shadow-md shadow-indigo-500/20">
+          D
+        </div>
+        <div>
+          <span class="font-extrabold text-sm text-white tracking-tight flex items-center gap-1">
+            DevTrack <span class="text-indigo-400 font-mono">AI</span>
+          </span>
+          <span class="text-[10px] text-slate-400 font-mono block -mt-0.5">SDE-1 Personal OS</span>
+        </div>
+      </div>
+      <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Navigation List -->
+    <div class="p-3 overflow-y-auto flex-1 space-y-5">
+      <!-- Section 1 -->
+      <div class="space-y-1">
+        <span class="px-3 text-[10px] font-bold text-slate-500 tracking-wider">CORE OPERATING SYSTEM</span>
+        <div class="space-y-0.5 mt-1">
+          <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-white bg-indigo-600 shadow-sm shadow-indigo-600/20">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+              <span>Dashboard</span>
+            </div>
+          </button>
+          <button onclick="switchTab('roadmap')" id="nav-roadmap" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="map" class="w-4 h-4"></i>
+              <span>100-Day Roadmap</span>
+            </div>
+            <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-indigo-500/20 text-indigo-300">Day 1</span>
+          </button>
+          <button onclick="switchTab('tasks')" id="nav-tasks" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="check-square" class="w-4 h-4"></i>
+              <span>Tasks & Sprints</span>
+            </div>
+            <span id="sidebar-tasks-count" class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-indigo-500/20 text-indigo-400 font-bold">0</span>
+          </button>
+          <button onclick="switchTab('calendar')" id="nav-calendar" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+              <span>Monthly Calendar</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="space-y-1">
+        <span class="px-3 text-[10px] font-bold text-slate-500 tracking-wider">LEARNING & DSA TREE</span>
+        <div class="space-y-0.5 mt-1">
+          <button onclick="switchTab('dsa')" id="nav-dsa" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="code-2" class="w-4 h-4"></i>
+              <span>DSA Knowledge Tree</span>
+            </div>
+            <span id="sidebar-revision-badge" class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-rose-500/20 text-rose-400 font-semibold">2 Due</span>
+          </button>
+          <button onclick="switchTab('webdev')" id="nav-webdev" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="globe" class="w-4 h-4"></i>
+              <span>Web Dev Tree</span>
+            </div>
+          </button>
+          <button onclick="switchTab('projects')" id="nav-projects" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="folder-git-2" class="w-4 h-4"></i>
+              <span>Portfolio Projects</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="space-y-1">
+        <span class="px-3 text-[10px] font-bold text-slate-500 tracking-wider">PRODUCTIVITY & ATS</span>
+        <div class="space-y-0.5 mt-1">
+          <button onclick="switchTab('study')" id="nav-study" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="clock" class="w-4 h-4"></i>
+              <span>Study Timer (Pomodoro)</span>
+            </div>
+          </button>
+          <button onclick="switchTab('habits')" id="nav-habits" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="flame" class="w-4 h-4"></i>
+              <span>Habit Consistency</span>
+            </div>
+          </button>
+          <button onclick="switchTab('mood')" id="nav-mood" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+              <span>Energy & Mood</span>
+            </div>
+          </button>
+          <button onclick="switchTab('jobs')" id="nav-jobs" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="briefcase" class="w-4 h-4"></i>
+              <span>ATS Job Tracker</span>
+            </div>
+          </button>
+          <button onclick="switchTab('resume')" id="nav-resume" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="file-text" class="w-4 h-4"></i>
+              <span>Resume & Mock Prep</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="space-y-1">
+        <span class="px-3 text-[10px] font-bold text-slate-500 tracking-wider">INTELLIGENCE</span>
+        <div class="space-y-0.5 mt-1">
+          <button onclick="switchTab('ai')" id="nav-ai" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="brain-circuit" class="w-4 h-4"></i>
+              <span>DevMentor AI</span>
+            </div>
+          </button>
+          <button onclick="switchTab('plan')" id="nav-plan" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span>Today's AI Plan</span>
+            </div>
+          </button>
+          <button onclick="switchTab('analytics')" id="nav-analytics" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+              <span>Analytics & Heatmap</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 5: Authentication & Profile -->
+      <div class="space-y-1">
+        <span class="px-3 text-[10px] font-bold text-indigo-400 tracking-wider">ACCOUNT & PROFILE</span>
+        <div class="space-y-0.5 mt-1">
+          <button onclick="switchTab('auth')" id="nav-auth" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="shield-check" class="w-4 h-4 text-indigo-400"></i>
+              <span class="font-semibold text-slate-200">Sign In / Sign Up</span>
+            </div>
+            <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-indigo-500/20 text-indigo-300">Login</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Profile Footer with Direct Auth Tab Trigger -->
+    <div onclick="switchTab('auth')" class="p-4 border-t border-slate-800/80 bg-slate-950/60 flex items-center justify-between hover:bg-slate-900/80 transition-colors cursor-pointer group" title="Click to Sign In or Switch Account">
+      <div class="flex items-center gap-2.5">
+        <div id="sidebar-user-avatar" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-indigo-400 font-mono group-hover:border-indigo-500">
+          NK
+        </div>
+        <div>
+          <span id="sidebar-user-name" class="text-xs font-semibold text-white block group-hover:text-indigo-300">Nikhitha</span>
+          <span id="sidebar-user-role" class="text-[10px] text-emerald-400 font-mono">SDE-1 Trajectory</span>
+        </div>
+      </div>
+      <span class="text-[10px] text-indigo-400 group-hover:text-indigo-300 font-mono font-bold">Profile ▾</span>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <div class="flex-1 flex flex-col min-w-0">
+    <!-- Top Header -->
+    <header class="h-14 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-20 px-4 md:px-6 flex items-center justify-between gap-3">
+      <!-- Left: Mobile Menu Button + Search / Command Palette Shortcut Trigger -->
+      <div class="flex items-center gap-2">
+        <button onclick="toggleMobileSidebar()" class="p-2 text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl md:hidden cursor-pointer" title="Toggle Navigation Menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <button onclick="openCommandPalette()" class="flex items-center gap-3 px-3 py-1.5 bg-slate-900/80 hover:bg-slate-850 border border-slate-800 rounded-xl text-xs text-slate-400 hover:text-slate-200 transition-all cursor-pointer w-44 sm:w-64 md:w-80">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span class="flex-1 text-left truncate">Search or type a command...</span>
+          <kbd class="hidden sm:flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] bg-slate-950 text-slate-400 border border-slate-700 rounded font-mono">
+            ⌘ K
+          </kbd>
+        </button>
+      </div>
+
+      <!-- Right action controls -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button onclick="openQuickActionModal()" class="px-2.5 sm:px-3 py-1.5 text-xs font-medium bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-400"></i>
+          <span class="hidden sm:inline">Quick AI Log</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 bg-amber-500/10 border border-amber-500/20 rounded-lg text-xs font-mono font-bold text-amber-400">
+          <i data-lucide="flame" class="w-3.5 h-3.5"></i>
+          <span>1d</span>
+        </div>
+
+        <button onclick="openCommandPalette()" class="relative p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors cursor-pointer" title="Notifications & Revisions Due">
+          <i data-lucide="bell" class="w-4 h-4"></i>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
+        </button>
+
+        <!-- Prominent Auth / Sign In Button (switches to dedicated Auth view) -->
+        <button onclick="switchTab('auth')" class="flex items-center gap-2 pl-2 pr-3 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 rounded-xl text-xs text-indigo-200 hover:text-white transition-all cursor-pointer shadow-sm" title="Sign In or Manage Account">
+          <div id="header-user-avatar" class="w-5 h-5 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 text-slate-950 font-bold text-[10px] flex items-center justify-center font-mono">
+            NS
+          </div>
+          <span id="header-user-btn-text" class="font-semibold">Sign In / Account</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main View Container -->
+    <main class="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto pb-16">
+      
+      <!-- ==================== VIEW: DASHBOARD ==================== -->
+      <section id="view-dashboard" class="view-section space-y-6">
+        <!-- Hero Header -->
+        <div class="p-6 md:p-8 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-slate-800 rounded-3xl shadow-xl relative overflow-hidden">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-mono text-indigo-400">
+                <span>Tuesday, September 29, 2026</span>
+                <span>•</span>
+                <span class="font-bold">DAY 1 / 100</span>
+              </div>
+              <h1 id="dashboard-user-greeting" class="text-2xl md:text-3xl font-black text-white tracking-tight mt-1">
+                GOOD MORNING, NIKHITHA
+              </h1>
+              <p class="text-xs md:text-sm text-slate-300 mt-1 max-w-xl">
+                Goal: <strong class="text-indigo-300 font-semibold">Become Amazon SDE-1 interview ready</strong>. Phase 1: Foundation & Complexity kick-off.
+              </p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-2xl flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-amber-500/10 text-amber-400">
+                  <i data-lucide="flame" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <span class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider block">Streak</span>
+                  <span class="text-lg font-bold text-white font-mono">1 Day</span>
+                </div>
+              </div>
+              <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-2xl flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-indigo-500/10 text-indigo-400">
+                  <i data-lucide="clock" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <span class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider block">Study Hours</span>
+                  <span class="text-lg font-bold text-white font-mono">0.0 / 5.0h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Daily AI Insights -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+            <div class="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span>WHAT YOU DID</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Welcome to <strong class="text-white">Day 1</strong> of your SDE-1 journey! Your 100-day roadmap is initialized and ready for your first study session.
+            </p>
+          </div>
+          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+            <div class="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-wider">
+              <i data-lucide="compass" class="w-4 h-4"></i>
+              <span>WHAT YOU'RE STARTING</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Day 1 Core Focus: <strong class="text-indigo-300">Time & Space Complexity (Big-O)</strong>, recursion analysis, and JavaScript runtime fundamentals.
+            </p>
+          </div>
+          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+            <div class="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-wider">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span>WHAT YOU SHOULD DO NEXT</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Click <strong class="text-indigo-200">+ Add Task</strong> below to set your first daily goals, or launch your 25-minute Pomodoro timer in the Study tab.
+            </p>
+          </div>
+        </div>
+
+        <!-- Revisions Due Banner -->
+        <div class="p-4 bg-indigo-950/30 border border-indigo-500/30 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0"></div>
+            <div>
+              <span class="text-xs font-bold text-white uppercase tracking-wider">Day 1 Launch: Spaced Repetition Ready</span>
+              <p class="text-xs text-indigo-300/90 mt-0.5">0 revisions due today — start logging DSA problems to schedule your SuperMemo SM-2 retention reviews!</p>
+            </div>
+          </div>
+          <button onclick="switchTab('dsa')" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-medium flex items-center gap-1.5 cursor-pointer">
+            <span>Explore DSA Tree</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Left 2 Cols: Today's Focus & Tasks -->
+          <div class="lg:col-span-2 space-y-5">
+            <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                  <i data-lucide="target" class="w-4 h-4 text-indigo-400"></i>
+                  <span>Today's Focus & Action Plan</span>
+                </h3>
+                <div class="flex items-center gap-2">
+                  <button onclick="openTaskModal()" class="px-2.5 py-1 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 rounded-lg text-xs font-semibold flex items-center gap-1 cursor-pointer">
+                    <i data-lucide="plus" class="w-3 h-3"></i>
+                    <span>+ Add Task</span>
+                  </button>
+                  <button onclick="switchTab('tasks')" class="text-xs text-indigo-400 hover:underline">View All Tasks</button>
+                </div>
+              </div>
+
+              <ol class="list-decimal list-inside text-xs text-slate-300 space-y-1.5 font-medium">
+                <li>Kick off 100-Day SDE-1 Roadmap: Day 1 Big-O & Complexity Analysis</li>
+                <li>Web Development Setup: Modern JavaScript Engine & Execution Context</li>
+                <li>Add your first daily task using the "+ Add Task" button below</li>
+                <li>Initialize your personal preparation goals and target companies</li>
+              </ol>
+
+              <!-- Interactive Dashboard Task List -->
+              <div class="space-y-2 pt-2">
+                <div id="dashboard-tasks-container" class="space-y-2">
+                  <!-- Injected via JavaScript -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Active ATS Pipeline -->
+            <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                  <i data-lucide="briefcase" class="w-4 h-4 text-blue-400"></i>
+                  <span>Active ATS Applications</span>
+                </h3>
+                <button onclick="switchTab('jobs')" class="text-xs text-blue-400 hover:underline">Open Pipeline</button>
+              </div>
+              <div class="space-y-2 text-xs">
+                <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="font-bold text-white">Amazon</span>
+                      <span class="text-slate-400">— SDE-1</span>
+                    </div>
+                    <span class="text-[10px] text-amber-400 font-semibold block mt-0.5">⚠️ Follow-up email due today!</span>
+                  </div>
+                  <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/30">Applied</span>
+                </div>
+                <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-white">ServiceNow</span>
+                    <span class="text-slate-400">— Associate Software Engineer</span>
+                    <span class="text-[10px] text-cyan-400 font-mono block mt-0.5">HackerRank OA scheduled for Oct 2</span>
+                  </div>
+                  <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">OA Stage</span>
+                </div>
+                <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-white">Uber</span>
+                    <span class="text-slate-400">— SDE-1 Backend</span>
+                    <span class="text-[10px] text-indigo-400 font-mono block mt-0.5">Round 1 Technical Coding on Oct 5</span>
+                  </div>
+                  <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">Interview</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Col: Progress Bars, Mood, Weak Areas -->
+          <div class="space-y-5">
+            <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
+              <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+                <span>Overall Curriculum Progress</span>
+              </h3>
+              <div class="space-y-3 text-xs">
+                <div>
+                  <div class="flex justify-between text-slate-300 mb-1">
+                    <span>DSA Progression</span>
+                    <span class="font-mono text-cyan-400 font-bold">67%</span>
+                  </div>
+                  <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    <div class="h-full bg-cyan-500 rounded-full" style="width: 67%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-slate-300 mb-1">
+                    <span>Web Development</span>
+                    <span class="font-mono text-emerald-400 font-bold">48%</span>
+                  </div>
+                  <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    <div class="h-full bg-emerald-500 rounded-full" style="width: 48%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-slate-300 mb-1">
+                    <span>Portfolio Projects</span>
+                    <span class="font-mono text-violet-400 font-bold">58%</span>
+                  </div>
+                  <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    <div class="h-full bg-violet-500 rounded-full" style="width: 58%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mood Card -->
+            <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-between">
+              <div>
+                <span class="text-xs text-slate-400 block">Today's Mood & Energy</span>
+                <span class="text-sm font-bold text-white mt-1 block">Rating 4 / 5 (Good)</span>
+              </div>
+              <div class="text-3xl">🙂</div>
+            </div>
+
+            <!-- Weak DSA Topics -->
+            <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-rose-400 block">
+                Weak DSA Areas (Prioritize Today)
+              </span>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-xs px-2.5 py-1 bg-rose-950/30 text-rose-300 border border-rose-500/30 rounded-lg font-medium">Dynamic Programming</span>
+                <span class="text-xs px-2.5 py-1 bg-rose-950/30 text-rose-300 border border-rose-500/30 rounded-lg font-medium">Binary Search</span>
+                <span class="text-xs px-2.5 py-1 bg-rose-950/30 text-rose-300 border border-rose-500/30 rounded-lg font-medium">Graph Topological Sort</span>
+              </div>
+              <p class="text-[11px] text-slate-400 leading-relaxed">
+                DevMentor AI recommends solving 1 problem in each weak topic before introducing new algorithms.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: TASKS (FULL CRUD + BULK + QUICK ADD) ==================== -->
+      <section id="view-tasks" class="view-section space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <i data-lucide="check-square" class="w-6 h-6 text-indigo-400"></i>
+              <span>Task Management — Full CRUD</span>
+            </h2>
+            <p class="text-xs md:text-sm text-slate-400 mt-1">
+              Create, edit, duplicate, complete, delete with confirmation, and execute bulk actions.
+            </p>
+          </div>
+          <button onclick="openTaskModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-semibold flex items-center gap-2 cursor-pointer shadow-sm shadow-indigo-500/20">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Add New Task</span>
+          </button>
+        </div>
+
+        <!-- Natural Language Quick Add Input -->
+        <div class="relative">
+          <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+          <input
+            id="nlp-quick-task-input"
+            type="text"
+            placeholder='Quick Add with AI: "Do 2 binary search problems tomorrow" or "Study React for 45 mins"'
+            onkeydown="if (event.key === 'Enter') handleNlpQuickAdd();"
+            class="w-full pl-10 pr-24 py-2.5 bg-slate-900 border border-slate-700 hover:border-indigo-500 focus:border-indigo-500 rounded-xl text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+          />
+          <button onclick="handleNlpQuickAdd()" class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer">
+            <span>Parse</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <!-- Task Tabs (9 Views: Today, Tomorrow, This Week, Upcoming, Overdue, Completed, All Tasks, Kanban, Calendar) -->
+        <div class="flex items-center gap-1 border-b border-slate-800 pb-px overflow-x-auto">
+          <button onclick="filterTasksTab('today')" id="task-tab-today" class="task-tab-btn flex items-center gap-2 px-3.5 py-2 text-xs md:text-sm font-semibold border-b-2 border-indigo-500 text-indigo-400">
+            <span>Today</span>
+            <span id="tab-count-today" class="text-[10px] px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300">0</span>
+          </button>
+          <button onclick="filterTasksTab('tomorrow')" id="task-tab-tomorrow" class="task-tab-btn flex items-center gap-2 px-3.5 py-2 text-xs md:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+            <span>Tomorrow</span>
+            <span id="tab-count-tomorrow" class="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+          </button>
+          <button onclick="filterTasksTab('week')" id="task-tab-week" class="task-tab-btn flex items-center gap-2 px-3.5 py-2 text-xs md:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+            <span>This Week</span>
+            <span id="tab-count-week" class="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+          </button>
+          <button onclick="filterTasksTab('upcoming')" id="task-tab-upcoming" class="task-tab-btn flex items-center gap-2 px-3.5 py-2 text-xs md:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+            <span>Upcoming</span>
+            <span id="tab-count-upcoming" class="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+          </button>
+          <button onclick="filterTasksTab('overdue')" id="task-tab-overdue" class="task-tab-btn flex items-center gap-2 px-3.5 py-2 text-xs md:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+            <span>Overdue</span>
+            <span id="tab-count-overdue" class="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+          </button>
+          <button onclick="filterTasksTab('completed')" id="task-tab-completed" class="task-tab-btn flex items-center gap-2 px-3.5 py-2 text-xs md:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+            <span>Completed</span>
+            <span id="tab-count-completed" class="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+          </button>
+          <button onclick="filterTasksTab('all')" id="task-tab-all" class="task-tab-btn flex items-center gap-2 px-3.5 py-2 text-xs md:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+            <span>All Tasks</span>
+            <span id="tab-count-all" class="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+          </button>
+          <button onclick="filterTasksTab('kanban')" id="task-tab-kanban" class="task-tab-btn flex items-center gap-1.5 px-3 py-2 text-xs md:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+            <span>Kanban</span>
+          </button>
+          <button onclick="filterTasksTab('calendar')" id="task-tab-calendar" class="task-tab-btn flex items-center gap-1.5 px-3 py-2 text-xs md:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+            <span>Calendar</span>
+          </button>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div id="tasks-filter-bar" class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <div class="relative flex-1">
+            <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input
+              id="tasks-search-input"
+              type="text"
+              oninput="renderTasksList()"
+              placeholder="Search by title, description, or #tag..."
+              class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs md:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select id="tasks-category-filter" onchange="renderTasksList()" class="px-3 py-2 text-xs bg-slate-900 border border-slate-800 rounded-lg text-slate-300 cursor-pointer">
+              <option value="ALL">All Categories</option>
+              <option value="DSA">DSA</option>
+              <option value="WEB_DEV">Web Dev</option>
+              <option value="PROJECT">Project</option>
+              <option value="CS">CS Fundamentals</option>
+              <option value="JOB">Job</option>
+              <option value="REVISION">Revision</option>
+              <option value="PERSONAL">Personal</option>
+            </select>
+
+            <select id="tasks-priority-filter" onchange="renderTasksList()" class="px-3 py-2 text-xs bg-slate-900 border border-slate-800 rounded-lg text-slate-300 cursor-pointer">
+              <option value="ALL">All Priorities</option>
+              <option value="URGENT">Urgent ⚡</option>
+              <option value="HIGH">High</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="LOW">Low</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tasks List Container -->
+        <div id="tasks-list-container" class="space-y-2.5">
+          <!-- Dynamically populated for list, kanban, or calendar -->
+        </div>
+
+        <!-- Bulk Action Floating Bar (Complete, Priority, Category, Due Date, Delete) -->
+        <div id="bulk-action-bar" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-slate-900 border border-slate-700 shadow-2xl rounded-2xl px-5 py-3 flex items-center gap-2.5 text-xs md:text-sm text-white hidden">
+          <div class="flex items-center gap-2 pr-2 border-r border-slate-800">
+            <span id="bulk-selected-count" class="font-bold text-indigo-400 bg-indigo-500/20 px-2 py-0.5 rounded-full text-xs">0</span>
+            <span class="text-xs text-slate-300">selected</span>
+          </div>
+          <button onclick="handleBulkComplete()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-1.5 cursor-pointer" title="Mark complete">
+            <i data-lucide="check-square" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>Complete</span>
+          </button>
+          <div class="relative inline-block">
+            <select onchange="if(this.value) { handleBulkChangePriority(this.value); this.value=''; }" class="px-2 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs rounded-lg text-amber-300 border-none cursor-pointer">
+              <option value="">Priority ▾</option>
+              <option value="URGENT">Urgent ⚡</option>
+              <option value="HIGH">High</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="LOW">Low</option>
+            </select>
+          </div>
+          <div class="relative inline-block">
+            <select onchange="if(this.value) { handleBulkChangeCategory(this.value); this.value=''; }" class="px-2 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs rounded-lg text-cyan-300 border-none cursor-pointer">
+              <option value="">Category ▾</option>
+              <option value="DSA">DSA</option>
+              <option value="WEB_DEV">Web Dev</option>
+              <option value="PROJECT">Project</option>
+              <option value="CS">CS</option>
+              <option value="JOB">Job</option>
+              <option value="REVISION">Revision</option>
+              <option value="PERSONAL">Personal</option>
+            </select>
+          </div>
+          <button onclick="openBulkDueDateModal()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-1.5 cursor-pointer" title="Set due date">
+            <i data-lucide="calendar" class="w-3.5 h-3.5 text-blue-400"></i>
+            <span>Due Date</span>
+          </button>
+          <button onclick="handleBulkDelete()" class="px-2.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>Delete</span>
+          </button>
+          <button onclick="clearTaskSelection()" class="p-1.5 text-slate-400 hover:text-white" title="Clear selection">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: 100-DAY ROADMAP ==================== -->
+      <section id="view-roadmap" class="view-section space-y-6 hidden">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <i data-lucide="map" class="w-6 h-6 text-indigo-400"></i>
+              <span>100-Day Amazon SDE-1 Roadmap Timeline</span>
+            </h2>
+            <p class="text-xs md:text-sm text-slate-400 mt-1">
+              Phased syllabus from Foundation to System Design, LLD, and Mock Coding Sprints.
+            </p>
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+            <span class="text-xs text-slate-400 block">Milestone Goal</span>
+            <span class="text-sm font-bold text-white mt-1 block truncate">Become Amazon SDE-1 ready</span>
+          </div>
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+            <span class="text-xs text-slate-400 block">Current Day</span>
+            <span class="text-lg font-bold text-indigo-400 font-mono mt-1 block">Day 1 / 100</span>
+          </div>
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+            <span class="text-xs text-slate-400 block">Days Completed</span>
+            <span class="text-lg font-bold text-emerald-400 font-mono mt-1 block">0 Days (0%)</span>
+          </div>
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+            <span class="text-xs text-slate-400 block">Days Remaining</span>
+            <span class="text-lg font-bold text-amber-400 font-mono mt-1 block">100 Days</span>
+          </div>
+        </div>
+
+        <!-- Micro Matrix 100-Day Map -->
+        <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-xl space-y-3">
+          <div class="flex justify-between text-xs text-slate-400">
+            <span>Visual 100-Day Matrix</span>
+            <span class="font-mono text-indigo-400 font-semibold">Active: Day 1</span>
+          </div>
+          <div id="roadmap-micro-matrix" class="grid grid-cols-10 sm:grid-cols-20 gap-1.5">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Milestone Day Cards -->
+        <div id="roadmap-milestones-container" class="space-y-3">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: DSA KNOWLEDGE TREE ==================== -->
+      <section id="view-dsa" class="view-section space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <i data-lucide="code-2" class="w-6 h-6 text-cyan-400"></i>
+              <span>DSA Knowledge Tree & Problem Tracker</span>
+            </h2>
+            <p class="text-xs md:text-sm text-slate-400 mt-1">
+              Complete progression from Programming Basics to FAANG Hybrid Patterns.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="pickRandomWeakProblem()" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-850 text-indigo-300 border border-indigo-500/30 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="dices" class="w-4 h-4"></i>
+              <span>Random Weak Problem</span>
+            </button>
+            <button onclick="openProblemModal()" class="px-3.5 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-sm shadow-cyan-600/20">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Log Problem</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sub Tabs -->
+        <div class="flex items-center gap-2 border-b border-slate-800 pb-px">
+          <button onclick="switchDsaSubTab('tree')" id="dsa-subtab-tree" class="px-3.5 py-2 text-xs font-semibold border-b-2 border-cyan-500 text-cyan-400">
+            Knowledge Tree & Hybrid Patterns
+          </button>
+          <button onclick="switchDsaSubTab('problems')" id="dsa-subtab-problems" class="px-3.5 py-2 text-xs font-medium border-b-2 border-transparent text-slate-400 hover:text-white">
+            Problem Database (8)
+          </button>
+          <button onclick="switchDsaSubTab('revisions')" id="dsa-subtab-revisions" class="px-3.5 py-2 text-xs font-medium border-b-2 border-transparent text-slate-400 hover:text-white">
+            Spaced Repetition Queue (2 Due)
+          </button>
+        </div>
+
+        <!-- Subtab Content: Tree -->
+        <div id="dsa-content-tree" class="space-y-4">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Subtab Content: Problem Table -->
+        <div id="dsa-content-problems" class="space-y-4 hidden">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Subtab Content: Revisions -->
+        <div id="dsa-content-revisions" class="space-y-4 hidden">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: WEB DEV TREE ==================== -->
+      <section id="view-webdev" class="view-section space-y-6 hidden">
+        <div>
+          <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <i data-lucide="globe" class="w-6 h-6 text-emerald-400"></i>
+            <span>Full-Stack Web Development Tree</span>
+          </h2>
+          <p class="text-xs md:text-sm text-slate-400 mt-1">
+            Concepts, lessons, and project practices from HTML/CSS to Node, MongoDB, Next.js 14, and DevOps.
+          </p>
+        </div>
+        <div id="webdev-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: PROJECTS ==================== -->
+      <section id="view-projects" class="view-section space-y-6 hidden">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <i data-lucide="folder-git-2" class="w-6 h-6 text-violet-400"></i>
+              <span>Portfolio Projects Tracker</span>
+            </h2>
+            <p class="text-xs md:text-sm text-slate-400 mt-1">
+              Track tasks, bugs, features, and resume bullets for your portfolio architectures.
+            </p>
+          </div>
+        </div>
+        <div id="projects-container" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: STUDY TIMER (POMODORO) ==================== -->
+      <section id="view-study" class="view-section space-y-6 hidden">
+        <div>
+          <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <i data-lucide="clock" class="w-6 h-6 text-indigo-400"></i>
+            <span>Study Timer & Pomodoro Engine</span>
+          </h2>
+          <p class="text-xs md:text-sm text-slate-400 mt-1">
+            Time-boxed deep focus blocks with post-session topic logging and productivity ratings.
+          </p>
+        </div>
+
+        <div class="p-8 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl flex flex-col items-center justify-center text-center">
+          <div class="flex items-center gap-2 p-1 bg-slate-950 border border-slate-800 rounded-xl mb-6">
+            <button onclick="setTimerPreset(25, 5)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white">25 / 5 min</button>
+            <button onclick="setTimerPreset(50, 10)" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-400 hover:text-white">50 / 10 min</button>
+            <button onclick="setTimerPreset(90, 15)" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-400 hover:text-white">90 / 15 min</button>
+          </div>
+
+          <span class="text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-3 bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
+            🔥 Deep Focus Sprint
+          </span>
+
+          <div id="pomodoro-display" class="text-7xl sm:text-8xl font-black font-mono tracking-tighter text-white my-3 select-none">
+            25:00
+          </div>
+
+          <div class="flex items-center gap-3 mt-6">
+            <button id="pomodoro-toggle-btn" onclick="togglePomodoroTimer()" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-base font-semibold shadow-lg shadow-indigo-600/20 cursor-pointer flex items-center gap-2">
+              <i data-lucide="play" class="w-5 h-5"></i>
+              <span>Start Session</span>
+            </button>
+            <button onclick="resetPomodoroTimer()" class="p-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl cursor-pointer" title="Reset">
+              <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: HABITS ==================== -->
+      <section id="view-habits" class="view-section space-y-6 hidden">
+        <div>
+          <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <i data-lucide="flame" class="w-6 h-6 text-amber-400"></i>
+            <span>Habit Tracker & Consistency Heatmap</span>
+          </h2>
+          <p class="text-xs md:text-sm text-slate-400 mt-1">
+            Build unshakeable daily habits: wake up early, study 4 hours, solve 2 DSA problems.
+          </p>
+        </div>
+        <div id="habits-table-container" class="border border-slate-800 rounded-2xl bg-slate-900/60 overflow-hidden">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: MOOD ==================== -->
+      <section id="view-mood" class="view-section space-y-6 hidden">
+        <div>
+          <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <i data-lucide="heart" class="w-6 h-6 text-rose-400"></i>
+            <span>Daily Mood & Energy Tracker</span>
+          </h2>
+          <p class="text-xs md:text-sm text-slate-400 mt-1">
+            Monitor daily wellbeing and study correlation trends. Strictly descriptive, non-diagnostic.
+          </p>
+        </div>
+        <div id="mood-tracker-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: ATS JOBS ==================== -->
+      <section id="view-jobs" class="view-section space-y-6 hidden">
+        <div>
+          <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <i data-lucide="briefcase" class="w-6 h-6 text-blue-400"></i>
+            <span>ATS Job Application Pipeline</span>
+          </h2>
+          <p class="text-xs md:text-sm text-slate-400 mt-1">
+            Kanban workflow from Wishlist to Applied, OA, Interview, and Offer.
+          </p>
+        </div>
+        <div id="jobs-kanban-container" class="grid grid-cols-1 md:grid-cols-5 gap-3.5">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: AI MENTOR ==================== -->
+      <section id="view-ai" class="view-section space-y-6 hidden">
+        <div id="ai-chat-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: AI PLAN ==================== -->
+      <section id="view-plan" class="view-section space-y-6 hidden">
+        <div id="ai-plan-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: ANALYTICS ==================== -->
+      <section id="view-analytics" class="view-section space-y-6 hidden">
+        <div id="analytics-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: CALENDAR ==================== -->
+      <section id="view-calendar" class="view-section space-y-6 hidden">
+        <div id="calendar-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: RESUME ==================== -->
+      <section id="view-resume" class="view-section space-y-6 hidden">
+        <div id="resume-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: AUTH / ACCOUNT (DEDICATED FULL PAGE) ==================== -->
+      <section id="view-auth" class="view-section space-y-6 hidden">
+        <div class="max-w-2xl mx-auto space-y-6">
+          <div class="text-center space-y-2">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 to-cyan-400 mx-auto flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg shadow-indigo-500/20">
+              D
+            </div>
+            <h2 class="text-2xl md:text-3xl font-black text-white tracking-tight">Developer Profile & Authentication</h2>
+            <p class="text-xs md:text-sm text-slate-400">Sign in to sync your SDE-1 interview roadmap, track DSA problem mastery, and monitor job applications.</p>
+          </div>
+
+          <!-- Quick 1-Click Demo Login Banner -->
+          <div class="p-5 bg-gradient-to-r from-indigo-950/60 via-slate-900 to-indigo-950/60 border border-indigo-500/40 rounded-2xl space-y-3 shadow-xl">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-indigo-300 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+                <span>Fast-Track Demo SDE-1 Profile</span>
+              </span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">1-Click Instant</span>
+            </div>
+            <p class="text-xs text-slate-300">
+              Launch directly into <strong>Nikhitha</strong> (Amazon SDE-1 candidate, Day 1 kickoff, 0 tasks initialized, ready to start).
+            </p>
+            <button onclick="handleDemoLogin(); switchTab('dashboard');" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-indigo-600/30 transition-all">
+              <i data-lucide="terminal" class="w-4 h-4"></i>
+              <span>Launch Demo Developer Profile</span>
+            </button>
+          </div>
+
+          <!-- Auth Box: Tabs for Sign In & Sign Up -->
+          <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-5">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-2">
+              <button onclick="switchAuthViewTab('signin')" id="auth-view-tab-signin" class="px-4 py-2 text-sm font-bold border-b-2 border-indigo-500 text-indigo-400 cursor-pointer">
+                Sign In
+              </button>
+              <button onclick="switchAuthViewTab('signup')" id="auth-view-tab-signup" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-white cursor-pointer">
+                Create Account (Sign Up)
+              </button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="auth-view-content-signin" onsubmit="handleAuthViewSignIn(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1.5">Developer Email</label>
+                <div class="relative">
+                  <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                  <input id="auth-view-signin-email" type="email" value="developer@example.com" placeholder="developer@example.com" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" required />
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1.5">Password</label>
+                <div class="relative">
+                  <i data-lucide="lock" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                  <input id="auth-view-signin-password" type="password" value="password123" placeholder="••••••••••••" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" required />
+                </div>
+              </div>
+              <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-indigo-600/20 transition-all">
+                <span>Sign In to DevTrack AI</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="auth-view-content-signup" onsubmit="handleAuthViewSignUp(event)" class="space-y-4 hidden">
+              <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1.5">Full Name *</label>
+                <div class="relative">
+                  <i data-lucide="user" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                  <input id="auth-view-signup-name" type="text" placeholder="e.g. Alex Chen" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" required />
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1.5">Developer Email *</label>
+                <div class="relative">
+                  <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                  <input id="auth-view-signup-email" type="email" placeholder="alex@code.io" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" required />
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-slate-300 mb-1.5">Target Company / Role</label>
+                  <input id="auth-view-signup-role" type="text" placeholder="Amazon SDE-1" value="Amazon SDE-1" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-slate-300 mb-1.5">Password *</label>
+                  <div class="relative">
+                    <i data-lucide="lock" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                    <input id="auth-view-signup-password" type="password" placeholder="••••••••••••" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" required />
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all">
+                <span>Create Account & Initialize Workspace</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </form>
+
+            <!-- Active Profile / Session Card -->
+            <div id="auth-view-active-card" class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3">
+              <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Current Session Profile</span>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div id="auth-view-avatar" class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 text-slate-950 font-bold text-xs flex items-center justify-center font-mono">
+                    NK
+                  </div>
+                  <div>
+                    <span id="auth-view-name" class="font-bold text-white text-sm block">Nikhitha</span>
+                    <span id="auth-view-email" class="text-xs text-slate-400 block">nikhitha.dev@example.com</span>
+                  </div>
+                </div>
+                <button onclick="handleSignOut()" class="px-3 py-1.5 bg-slate-800 hover:bg-rose-950/40 text-slate-300 hover:text-rose-400 rounded-xl text-xs border border-slate-700 hover:border-rose-500/30 cursor-pointer transition-colors">
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== TASK MODAL (CREATE / EDIT) ==================== -->
+  <div id="task-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto hidden">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeTaskModal()"></div>
+    <div class="relative z-10 w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 id="task-modal-title" class="text-base font-bold text-white">Create New Task</h3>
+        <button onclick="closeTaskModal()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="task-modal-id" />
+      <div class="space-y-3.5 text-xs">
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Task Title *</label>
+          <input id="task-modal-name" type="text" onkeydown="if(event.key === 'Enter') saveTaskModal();" placeholder="e.g. Solve 2 Binary Search problems" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Description</label>
+          <textarea id="task-modal-desc" rows="2" placeholder="Key notes, LC numbers, or checklist..." class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Category</label>
+            <select id="task-modal-cat" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="DSA">DSA</option>
+              <option value="WEB_DEV">Web Dev</option>
+              <option value="PROJECT">Project</option>
+              <option value="CS">CS Fundamentals</option>
+              <option value="JOB">Job</option>
+              <option value="REVISION">Revision</option>
+              <option value="PERSONAL">Personal</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Priority</label>
+            <select id="task-modal-pri" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+              <option value="URGENT">Urgent ⚡</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Due Date</label>
+            <input id="task-modal-due-date" type="date" class="w-full px-2.5 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Due Time</label>
+            <input id="task-modal-due-time" type="time" class="w-full px-2.5 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Est. Mins</label>
+            <input id="task-modal-est" type="number" step="5" class="w-full px-2.5 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Status</label>
+            <select id="task-modal-status" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="TODO">To Do</option>
+              <option value="IN_PROGRESS">In Progress</option>
+              <option value="COMPLETED">Completed</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Recurring Settings</label>
+            <select id="task-modal-recurring" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="NONE">None (One-time)</option>
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Optional Project</label>
+            <select id="task-modal-project" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="">No Project (Standalone)</option>
+              <option value="proj-1">Employee Offboarding Automation</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Optional Roadmap Day</label>
+            <select id="task-modal-roadmap-day" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="">No Roadmap Day</option>
+              <option value="day-1">Day 1: Time & Space Complexity Big-O & JavaScript Event Loop</option>
+              <option value="day-2">Day 2: Arrays & Dynamic Arrays & DOM Tree Basics</option>
+              <option value="day-3">Day 3: Two Pointers & CSS Flexbox/Grid In-Depth</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Tags (comma-separated)</label>
+          <input id="task-modal-tags" type="text" placeholder="BinarySearch, AmazonTag, LeetCode" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closeTaskModal()" class="px-3.5 py-1.5 text-xs text-slate-400 hover:text-white">Cancel</button>
+        <button onclick="saveTaskModal()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold">Save Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NLP QUICK ADD REVIEW MODAL ==================== -->
+  <div id="nlp-review-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeNlpReviewModal()"></div>
+    <div class="relative z-10 w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-5 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <div>
+          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+            <span>Review AI-Parsed Task</span>
+          </h3>
+          <p class="text-[11px] text-slate-400 mt-0.5">User MUST review parsed task attributes before saving</p>
+        </div>
+        <button onclick="closeNlpReviewModal()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      
+      <div class="p-3 bg-indigo-950/30 border border-indigo-500/30 rounded-xl text-xs text-indigo-300">
+        <span class="font-semibold text-indigo-200">Raw Input: </span>
+        <span id="nlp-review-raw-input"></span>
+      </div>
+
+      <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2.5 text-xs">
+        <div class="flex items-start justify-between gap-2">
+          <h4 id="nlp-review-title" class="text-sm font-semibold text-white"></h4>
+          <span id="nlp-review-priority" class="px-2 py-0.5 rounded text-[10px] font-bold border"></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-slate-300">
+          <div><span class="text-slate-500">Category: </span><span id="nlp-review-category" class="font-semibold text-indigo-300"></span></div>
+          <div><span class="text-slate-500">Due Date: </span><span id="nlp-review-duedate" class="font-mono text-slate-200"></span></div>
+          <div><span class="text-slate-500">Est. Time: </span><span id="nlp-review-est" class="text-slate-200"></span></div>
+          <div><span class="text-slate-500">Tags: </span><span id="nlp-review-tags" class="text-slate-400"></span></div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeNlpReviewModal()" class="px-3.5 py-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 rounded-lg">Cancel</button>
+        <button onclick="confirmSaveNlpTask()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i>
+          <span>Confirm & Add Task</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BULK DUE DATE MODAL ==================== -->
+  <div id="bulk-duedate-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeBulkDueDateModal()"></div>
+    <div class="relative z-10 w-full max-w-xs bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-5 space-y-4">
+      <h3 class="text-sm font-bold text-white">Set Due Date for Selected Tasks</h3>
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">New Due Date</label>
+        <input id="bulk-new-duedate" type="date" value="2026-09-29" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white text-xs" />
+      </div>
+      <div class="flex justify-end gap-2">
+        <button onclick="closeBulkDueDateModal()" class="px-3 py-1.5 text-xs bg-slate-800 text-slate-300 rounded-lg">Cancel</button>
+        <button onclick="applyBulkDueDate()" class="px-3 py-1.5 text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DELETE CONFIRMATION MODAL ==================== -->
+  <div id="delete-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeDeleteConfirmModal()"></div>
+    <div class="relative z-10 w-full max-w-sm bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-5 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-rose-500/10 text-rose-400 rounded-lg">
+          <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-white">Permanently Delete Task?</h3>
+          <p id="delete-confirm-text" class="text-xs text-slate-400 mt-0.5">Are you sure?</p>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button onclick="closeDeleteConfirmModal()" class="px-3.5 py-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 rounded-lg">Cancel</button>
+        <button id="delete-confirm-btn" class="px-3.5 py-1.5 text-xs text-white bg-rose-600 hover:bg-rose-500 rounded-lg font-semibold">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== COMMAND PALETTE (CTRL+K) ==================== -->
+  <div id="command-palette-modal" class="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 hidden">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCommandPalette()"></div>
+    <div class="relative z-10 w-full max-w-xl bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden p-2 space-y-2">
+      <div class="flex items-center px-3 py-2 border-b border-slate-800">
+        <i data-lucide="search" class="w-4 h-4 text-slate-400 mr-2.5"></i>
+        <input id="palette-search" type="text" placeholder="Type a command or navigate... (Esc to close)" class="w-full bg-transparent text-sm text-white focus:outline-none" oninput="filterPalette()" />
+        <kbd class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">ESC</kbd>
+      </div>
+      <div id="palette-items" class="max-h-80 overflow-y-auto space-y-1 p-1 text-xs">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NATURAL LANGUAGE QUICK ACTION MODAL ==================== -->
+  <div id="quick-action-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeQuickActionModal()"></div>
+    <div class="relative z-10 w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+          <span>Natural Language Quick Logger</span>
+        </h3>
+        <button onclick="closeQuickActionModal()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <textarea id="quick-action-input" rows="3" placeholder='e.g. "Finished 2 medium binary search problems, studied React useEffect for 45 minutes, mood 4"' class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs md:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"></textarea>
+      <div id="quick-action-preview" class="p-3 bg-indigo-950/30 border border-indigo-500/30 rounded-xl text-xs text-indigo-300 hidden"></div>
+      <div class="flex justify-end gap-2">
+        <button onclick="closeQuickActionModal()" class="px-3.5 py-1.5 text-xs text-slate-400 hover:text-white">Cancel</button>
+        <button onclick="executeQuickAction()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold">Parse & Apply Updates</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== AUTHENTICATION MODAL (SIGN IN / SIGN UP) ==================== -->
+  <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeAuthModal()"></div>
+    <div class="relative z-10 w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden p-6 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-sm">
+            D
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">DevTrack AI Authentication</h3>
+            <span class="text-[10px] text-slate-400 font-mono">SDE-1 Developer Profile</span>
+          </div>
+        </div>
+        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Quick 1-Click Demo Login Banner -->
+      <div class="p-3.5 bg-indigo-950/40 border border-indigo-500/30 rounded-2xl space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-400"></i>
+            <span>Quick 1-Click Demo Profile</span>
+          </span>
+          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300">Instant</span>
+        </div>
+        <p class="text-[11px] text-slate-300">
+          Fast-track into Nikhitha (SDE-1 candidate, Day 1 kickoff, 0 tasks initialized).
+        </p>
+        <button onclick="handleDemoLogin()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-indigo-600/20">
+          <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+          <span>Authenticate as Demo Developer</span>
+        </button>
+      </div>
+
+      <!-- Tabs: Sign In vs Sign Up -->
+      <div class="flex items-center gap-2 border-b border-slate-800 pb-px">
+        <button onclick="switchAuthTab('signin')" id="auth-tab-signin" class="px-3.5 py-1.5 text-xs font-bold border-b-2 border-indigo-500 text-indigo-400">
+          Sign In
+        </button>
+        <button onclick="switchAuthTab('signup')" id="auth-tab-signup" class="px-3.5 py-1.5 text-xs font-medium border-b-2 border-transparent text-slate-400 hover:text-white">
+          Create Account (Sign Up)
+        </button>
+      </div>
+
+      <!-- Sign In Content -->
+      <div id="auth-content-signin" class="space-y-3 pt-1">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Developer Email</label>
+          <input id="auth-signin-email" type="email" placeholder="nikhitha@example.com" value="nikhitha.dev@example.com" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
+          <input id="auth-signin-password" type="password" placeholder="••••••••••••" value="password123" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+        </div>
+        <button onclick="handleLogin(event)" class="w-full py-2 bg-slate-100 hover:bg-white text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md mt-1">
+          <span>Sign In to DevTrack</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- Sign Up Content -->
+      <div id="auth-content-signup" class="space-y-3 pt-1 hidden">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Full Name *</label>
+          <input id="auth-signup-name" type="text" placeholder="e.g. Alex Chen" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Developer Email *</label>
+          <input id="auth-signup-email" type="email" placeholder="alex@code.io" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Target Role</label>
+            <input id="auth-signup-role" type="text" placeholder="Amazon SDE-1" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
+            <input id="auth-signup-password" type="password" placeholder="••••••••••••" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+          </div>
+        </div>
+        <button onclick="handleSignUp(event)" class="w-full py-2 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md mt-1">
+          <span>Create Account & Initialize</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- Active Session Details / Sign Out -->
+      <div id="auth-session-box" class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between text-xs">
+        <div>
+          <span class="text-slate-400 block text-[10px]">CURRENTLY AUTHENTICATED</span>
+          <span id="auth-session-name" class="font-bold text-white">Nikhitha</span>
+          <span id="auth-session-role" class="text-[10px] text-emerald-400 block">Amazon SDE-1</span>
+        </div>
+        <button onclick="handleSignOut()" class="px-2.5 py-1 text-[11px] bg-slate-800 hover:bg-rose-950/40 text-slate-300 hover:text-rose-400 rounded-lg border border-slate-700 hover:border-rose-500/30 cursor-pointer">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DSA PROBLEM MODAL (LOG / EDIT) ==================== -->
+  <div id="problem-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto hidden">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeProblemModal()"></div>
+    <div class="relative z-10 w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <h3 id="prob-modal-title" class="text-base font-bold text-white">Log DSA Problem</h3>
+        <button onclick="closeProblemModal()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <input type="hidden" id="prob-modal-id" />
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Problem Name *</label>
+          <input id="prob-modal-name" type="text" placeholder="e.g. Search in Rotated Sorted Array" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Platform</label>
+            <select id="prob-modal-platform" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="LeetCode">LeetCode</option>
+              <option value="Codeforces">Codeforces</option>
+              <option value="HackerRank">HackerRank</option>
+              <option value="GeeksforGeeks">GeeksforGeeks</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Difficulty</label>
+            <select id="prob-modal-diff" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="EASY">Easy</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HARD">Hard</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Topic</label>
+            <input id="prob-modal-topic" type="text" placeholder="Binary Search" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Patterns (comma-separated)</label>
+            <input id="prob-modal-patterns" type="text" placeholder="Binary Search, Invariant" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Company Tags</label>
+            <input id="prob-modal-companies" type="text" placeholder="Amazon, Google, Meta" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Status</label>
+            <select id="prob-modal-status" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="ATTEMPTED">Attempted</option>
+              <option value="SOLVED">Solved</option>
+              <option value="MASTERED">Mastered</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Confidence (1-5)</label>
+            <select id="prob-modal-confidence" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+              <option value="1">1 (Struggled)</option>
+              <option value="2">2 (Weak)</option>
+              <option value="3">3 (Fair)</option>
+              <option value="4">4 (Good)</option>
+              <option value="5">5 (Mastered)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Next Revision</label>
+            <input id="prob-modal-revision" type="date" value="2026-10-02" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Mistakes / Invariants to Remember</label>
+          <textarea id="prob-modal-notes" rows="2" placeholder="e.g. Always check if left half is sorted with <= before binary searching right..." class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeProblemModal()" class="px-3.5 py-1.5 text-xs text-slate-400 hover:text-white">Cancel</button>
+        <button onclick="saveProblemModal()" class="px-4 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold">Save Problem</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic & Seed Store Engine -->
+  <script>
+    // --- LOCAL DATABASE / STATE ---
+    const STORAGE_KEY = 'devtrack_ai_state_v2';
+
+    const defaultState = {
+      profile: {
+        name: 'Nikhitha',
+        goalTitle: 'Become Amazon SDE-1 interview ready',
+        targetRole: 'SDE-1 Trajectory',
+        currentStreak: 1,
+        currentDay: 1,
+        isLoggedIn: true
+      },
+      tasks: [],
+      problems: []
+    };
+
+    function safeCreateIcons() {
+      try {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
+      } catch (e) {
+        console.warn('Lucide icons warning:', e);
+      }
+    }
+
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('main-sidebar');
+      if (!sidebar) return;
+      sidebar.classList.toggle('hidden');
+      sidebar.classList.toggle('fixed');
+      sidebar.classList.toggle('inset-y-0');
+      sidebar.classList.toggle('left-0');
+      sidebar.classList.toggle('z-50');
+      sidebar.classList.toggle('shadow-2xl');
+      sidebar.classList.toggle('bg-slate-950');
+      safeCreateIcons();
+    }
+
+    function loadState() {
+      try {
+        // Clear legacy v1 state if present to guarantee fresh Day 1 start
+        if (localStorage.getItem('devtrack_ai_state_v1') && !localStorage.getItem(STORAGE_KEY)) {
+          localStorage.removeItem('devtrack_ai_state_v1');
+        }
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && typeof parsed === 'object') {
+            return {
+              profile: { ...defaultState.profile, ...(parsed.profile || {}) },
+              tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
+              problems: Array.isArray(parsed.problems) ? parsed.problems : [],
+            };
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to parse localStorage, resetting to defaultState:', e);
+      }
+      return JSON.parse(JSON.stringify(defaultState));
+    }
+
+    function saveState(state) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    function resetToDayOne() {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem('devtrack_ai_state_v1');
+      appState = JSON.parse(JSON.stringify(defaultState));
+      saveState(appState);
+      updateAuthUI();
+      updateTaskCounts();
+      renderTasksList();
+      renderDashboardTasks();
+      renderRoadmap();
+      showToast('✓ Successfully reset to Day 1 with 0 tasks!', 'success');
+      switchTab('dashboard');
+    }
+
+    let appState = loadState();
+
+    // --- NAVIGATION TABS ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+      const activeSection = document.getElementById(`view-${tabId}`);
+      if (activeSection) activeSection.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeBtn = document.getElementById(`nav-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+      }
+
+      // Close mobile sidebar if open
+      if (window.innerWidth < 768) {
+        const sidebar = document.getElementById('main-sidebar');
+        if (sidebar && sidebar.classList.contains('fixed')) {
+          sidebar.classList.add('hidden');
+          sidebar.classList.remove('fixed', 'inset-y-0', 'left-0', 'z-50', 'shadow-2xl');
+        }
+      }
+
+      // Re-render specific views if needed
+      try {
+        if (tabId === 'tasks') renderTasksList();
+        if (tabId === 'dashboard') renderDashboardTasks();
+        if (tabId === 'dsa') renderDsaTree();
+        if (tabId === 'roadmap') renderRoadmap();
+        if (tabId === 'webdev') renderWebDev();
+        if (tabId === 'projects') renderProjects();
+        if (tabId === 'habits') renderHabits();
+        if (tabId === 'mood') renderMood();
+        if (tabId === 'jobs') renderJobs();
+        if (tabId === 'ai') renderAI();
+        if (tabId === 'plan') renderPlan();
+        if (tabId === 'analytics') renderAnalytics();
+        if (tabId === 'calendar') renderCalendar();
+        if (tabId === 'resume') renderResume();
+        if (tabId === 'auth') updateAuthViewUI();
+      } catch (err) {
+        console.error('Error rendering tab:', tabId, err);
+      }
+
+      safeCreateIcons();
+    }
+
+    // --- TASK MANAGER (FULL CRUD + 9 VIEWS + BULK + DUPLICATE + NLP QUICK ADD REVIEW) ---
+    let currentTaskFilterTab = 'today';
+    let selectedTaskIds = new Set();
+    let taskPendingDeleteId = null;
+    let nlpPendingTask = null;
+
+    function renderTasksList() {
+      const container = document.getElementById('tasks-list-container');
+      const filterBar = document.getElementById('tasks-filter-bar');
+      if (!container) return;
+
+      const search = (document.getElementById('tasks-search-input')?.value || '').toLowerCase();
+      const catFilter = document.getElementById('tasks-category-filter')?.value || 'ALL';
+      const priFilter = document.getElementById('tasks-priority-filter')?.value || 'ALL';
+
+      const todayStr = '2026-09-29';
+      const tomorrowStr = '2026-09-30';
+      const nextWeekStr = '2026-10-06';
+
+      // Update badge counts
+      updateTaskCounts();
+
+      // View: KANBAN
+      if (currentTaskFilterTab === 'kanban') {
+        if (filterBar) filterBar.classList.remove('hidden');
+        const columns = [
+          { status: 'TODO', label: 'To Do', color: 'bg-indigo-500' },
+          { status: 'IN_PROGRESS', label: 'In Progress', color: 'bg-amber-500' },
+          { status: 'COMPLETED', label: 'Completed', color: 'bg-emerald-500' },
+        ];
+
+        container.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            ${columns.map(col => {
+              const colTasks = appState.tasks.filter(t => {
+                if (t.status !== col.status) return false;
+                const matchesSearch = t.title.toLowerCase().includes(search) || (t.description || '').toLowerCase().includes(search);
+                const matchesCat = catFilter === 'ALL' || t.category === catFilter;
+                const matchesPri = priFilter === 'ALL' || t.priority === priFilter;
+                return matchesSearch && matchesCat && matchesPri;
+              });
+
+              return `
+                <div class="bg-slate-900/50 border border-slate-800 rounded-xl p-4 flex flex-col gap-3 min-h-[420px]">
+                  <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full ${col.color}"></span>
+                      <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">${col.label}</h4>
+                    </div>
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono">${colTasks.length}</span>
+                  </div>
+                  <div class="space-y-2 flex-1">
+                    ${colTasks.length === 0 ? `
+                      <div class="p-8 text-center border border-dashed border-slate-800/60 rounded-lg">
+                        <p class="text-xs text-slate-500">No ${col.label.toLowerCase()} tasks</p>
+                      </div>
+                    ` : colTasks.map(t => renderTaskCardHtml(t)).join('')}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+        safeCreateIcons();
+        return;
+      }
+
+      // View: CALENDAR
+      if (currentTaskFilterTab === 'calendar') {
+        if (filterBar) filterBar.classList.add('hidden');
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        container.innerHTML = `
+          <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-semibold text-white flex items-center gap-2">
+                <i data-lucide="calendar" class="w-4 h-4 text-indigo-400"></i>
+                <span>Task Calendar (Week of Sep 28 – Oct 4, 2026)</span>
+              </h3>
+              <span class="text-xs text-slate-400 font-mono">Current Roadmap Phase: 2</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-7 gap-3">
+              ${days.map((dayName, idx) => {
+                const dayNum = 28 + idx;
+                const dStr = `2026-09-${dayNum < 10 ? '0' + dayNum : dayNum > 30 ? '10-0' + (dayNum - 30) : dayNum}`;
+                const dayTasks = appState.tasks.filter(t => t.dueDate === dStr || (idx === 1 && !t.dueDate));
+                const isToday = dStr === todayStr;
+
+                return `
+                  <div class="p-3 rounded-xl border flex flex-col gap-2 min-h-[160px] ${isToday ? 'bg-indigo-950/20 border-indigo-500/50 ring-1 ring-indigo-500/30' : 'bg-slate-950/60 border-slate-800/80'}">
+                    <div class="flex items-center justify-between text-xs pb-1 border-b border-slate-800/60">
+                      <span class="font-semibold text-slate-400">${dayName}</span>
+                      <span class="font-mono text-xs ${isToday ? 'text-indigo-400 font-bold' : 'text-slate-500'}">${dayNum > 30 ? dayNum - 30 : dayNum}</span>
+                    </div>
+                    <div class="space-y-1.5 flex-1">
+                      ${dayTasks.length === 0 ? '<span class="text-[10px] text-slate-600 block mt-2">No tasks</span>' : dayTasks.map(t => `
+                        <div onclick="editTask('${t.id}')" class="p-1.5 rounded text-[11px] font-medium border truncate cursor-pointer transition-colors ${t.status === 'COMPLETED' ? 'line-through text-slate-500 bg-slate-900/40 border-slate-800/50' : 'text-slate-200 bg-slate-900 border-slate-700/60 hover:border-indigo-500'}" title="${t.title}">
+                          ${t.title}
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+        safeCreateIcons();
+        return;
+      }
+
+      // Default List Views: today, tomorrow, week, upcoming, overdue, completed, all
+      if (filterBar) filterBar.classList.remove('hidden');
+
+      const filtered = appState.tasks.filter(t => {
+        // Tab filter
+        if (currentTaskFilterTab === 'today') {
+          if (t.dueDate && t.dueDate !== todayStr) return false;
+        } else if (currentTaskFilterTab === 'tomorrow') {
+          if (t.dueDate !== tomorrowStr) return false;
+        } else if (currentTaskFilterTab === 'week') {
+          if (!t.dueDate || t.dueDate < todayStr || t.dueDate > nextWeekStr) return false;
+        } else if (currentTaskFilterTab === 'upcoming') {
+          if (!t.dueDate || t.dueDate <= todayStr) return false;
+        } else if (currentTaskFilterTab === 'overdue') {
+          if (t.status === 'COMPLETED' || !t.dueDate || t.dueDate >= todayStr) return false;
+        } else if (currentTaskFilterTab === 'completed') {
+          if (t.status !== 'COMPLETED') return false;
+        }
+
+        // Search & category filters
+        const matchesSearch = !search || t.title.toLowerCase().includes(search) || (t.description || '').toLowerCase().includes(search) || (t.tags && t.tags.some(tg => tg.toLowerCase().includes(search)));
+        const matchesCat = catFilter === 'ALL' || t.category === catFilter;
+        const matchesPri = priFilter === 'ALL' || t.priority === priFilter;
+
+        return matchesSearch && matchesCat && matchesPri;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-10 text-center border border-dashed border-slate-800 rounded-2xl bg-slate-900/30 space-y-3">
+            <i data-lucide="inbox" class="w-8 h-8 mx-auto text-slate-600 mb-1"></i>
+            <h4 class="text-sm font-semibold text-slate-300">No tasks in this view</h4>
+            <p class="text-xs text-slate-500 max-w-sm mx-auto">Create a task for this filter or use the quick input above.</p>
+            <button onclick="openTaskModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-sm shadow-indigo-600/20">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Add New Task</span>
+            </button>
+          </div>
+        `;
+        safeCreateIcons();
+        return;
+      }
+
+      container.innerHTML = filtered.map(t => renderTaskCardHtml(t)).join('');
+      safeCreateIcons();
+    }
+
+    function renderTaskCardHtml(t) {
+      const isDone = t.status === 'COMPLETED';
+      const isSelected = selectedTaskIds.has(t.id);
+
+      const priColors = {
+        LOW: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
+        MEDIUM: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+        HIGH: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+        URGENT: 'bg-rose-500/10 text-rose-400 border-rose-500/30 font-bold',
+      };
+
+      const catColors = {
+        DSA: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
+        WEB_DEV: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+        PROJECT: 'bg-violet-500/10 text-violet-400 border-violet-500/30',
+        CS: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+        JOB: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+        REVISION: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
+        PERSONAL: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
+      };
+
+      return `
+        <div class="p-3.5 bg-slate-900/70 border ${isSelected ? 'border-indigo-500 bg-indigo-950/20' : isDone ? 'border-slate-800/50 opacity-60' : 'border-slate-800 hover:border-slate-700'} rounded-xl flex items-center justify-between gap-3.5 transition-all">
+          <div class="flex items-center gap-3 min-w-0 flex-1">
+            <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleSelectTask('${t.id}')" class="w-4 h-4 rounded border-slate-700 bg-slate-950 text-indigo-600 cursor-pointer" title="Select task" />
+            
+            <button onclick="toggleCompleteTask('${t.id}')" class="text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer flex-shrink-0" title="${isDone ? 'Reopen task' : 'Mark complete'}">
+              ${isDone ? '<i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500 fill-emerald-500/20"></i>' : '<i data-lucide="circle" class="w-5 h-5"></i>'}
+            </button>
+
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-sm font-medium ${isDone ? 'line-through text-slate-500' : 'text-slate-100'}">${t.title}</span>
+                <span class="px-2 py-0.5 text-xs rounded-md border ${catColors[t.category] || 'border-slate-700'}">${t.category}</span>
+                <span class="px-2 py-0.5 text-xs rounded-md border ${priColors[t.priority] || 'border-slate-700'}">${t.priority}</span>
+                ${t.recurring && t.recurring !== 'NONE' ? `<span class="px-1.5 py-0.5 text-[10px] rounded bg-slate-800 text-slate-400 border border-slate-700">${t.recurring}</span>` : ''}
+              </div>
+              ${t.description ? `<p class="text-xs text-slate-400 mt-1 line-clamp-1">${t.description}</p>` : ''}
+              <div class="flex items-center gap-3 mt-1.5 text-xs text-slate-400 font-mono flex-wrap">
+                ${t.dueDate ? `<span>📅 ${t.dueDate} ${t.dueTime ? '@ ' + t.dueTime : ''}</span>` : ''}
+                ${t.estimatedTime ? `<span>⏱ ${t.estimatedTime}m</span>` : ''}
+                ${(t.tags || []).map(tg => `<span class="text-slate-500">#${tg}</span>`).join(' ')}
+                ${isDone && t.completedAt ? `<span class="text-emerald-400/80">✓ Completed</span>` : ''}
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions: Edit | Complete | Delete | Duplicate -->
+          <div class="flex items-center gap-1">
+            <button onclick="editTask('${t.id}')" class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors" title="Edit task">
+              <i data-lucide="edit-2" class="w-4 h-4"></i>
+            </button>
+            <button onclick="toggleCompleteTask('${t.id}')" class="p-1.5 text-slate-400 hover:text-emerald-400 rounded-lg hover:bg-slate-800 transition-colors" title="${isDone ? 'Reopen task' : 'Complete task'}">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </button>
+            <button onclick="duplicateTask('${t.id}')" class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors" title="Duplicate task">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+            <button onclick="confirmDeleteTask('${t.id}')" class="p-1.5 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-rose-950/30 transition-colors" title="Delete task">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateTaskCounts() {
+      const todayStr = '2026-09-29';
+      const tomorrowStr = '2026-09-30';
+      const nextWeekStr = '2026-10-06';
+
+      const countToday = appState.tasks.filter(t => t.status !== 'COMPLETED' && (!t.dueDate || t.dueDate === todayStr)).length;
+      const countTomorrow = appState.tasks.filter(t => t.status !== 'COMPLETED' && t.dueDate === tomorrowStr).length;
+      const countWeek = appState.tasks.filter(t => t.status !== 'COMPLETED' && t.dueDate && t.dueDate >= todayStr && t.dueDate <= nextWeekStr).length;
+      const countUpcoming = appState.tasks.filter(t => t.status !== 'COMPLETED' && t.dueDate && t.dueDate > todayStr).length;
+      const countOverdue = appState.tasks.filter(t => t.status !== 'COMPLETED' && t.dueDate && t.dueDate < todayStr).length;
+      const countCompleted = appState.tasks.filter(t => t.status === 'COMPLETED').length;
+
+      const setTxt = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      setTxt('tab-count-today', countToday);
+      setTxt('tab-count-tomorrow', countTomorrow);
+      setTxt('tab-count-week', countWeek);
+      setTxt('tab-count-upcoming', countUpcoming);
+      setTxt('tab-count-overdue', countOverdue);
+      setTxt('tab-count-completed', countCompleted);
+      setTxt('tab-count-all', appState.tasks.length);
+      setTxt('sidebar-tasks-count', countToday);
+    }
+
+    function filterTasksTab(tab) {
+      currentTaskFilterTab = tab;
+      document.querySelectorAll('.task-tab-btn').forEach(btn => {
+        btn.classList.remove('border-indigo-500', 'text-indigo-400', 'font-semibold');
+        btn.classList.add('border-transparent', 'text-slate-400');
+      });
+      const activeBtn = document.getElementById(`task-tab-${tab}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-transparent', 'text-slate-400');
+        activeBtn.classList.add('border-indigo-500', 'text-indigo-400', 'font-semibold');
+      }
+      renderTasksList();
+    }
+
+    function toggleCompleteTask(id) {
+      const task = appState.tasks.find(t => t.id === id);
+      if (!task) return;
+      if (task.status === 'COMPLETED') {
+        task.status = 'TODO';
+        delete task.completedAt;
+        showToast(`Task reopened: "${task.title}"`, 'info');
+      } else {
+        task.status = 'COMPLETED';
+        task.completedAt = new Date().toISOString();
+        showToast(`✓ Task completed! Great work: "${task.title}"`, 'success');
+      }
+      saveState(appState);
+      renderTasksList();
+      renderDashboardTasks();
+      updateTaskCounts();
+    }
+
+    function toggleSelectTask(id) {
+      if (selectedTaskIds.has(id)) selectedTaskIds.delete(id);
+      else selectedTaskIds.add(id);
+
+      const bulkBar = document.getElementById('bulk-action-bar');
+      document.getElementById('bulk-selected-count').textContent = selectedTaskIds.size;
+      if (selectedTaskIds.size > 0) {
+        bulkBar.classList.remove('hidden');
+      } else {
+        bulkBar.classList.add('hidden');
+      }
+      renderTasksList();
+    }
+
+    function clearTaskSelection() {
+      selectedTaskIds.clear();
+      document.getElementById('bulk-action-bar').classList.add('hidden');
+      renderTasksList();
+    }
+
+    function handleBulkComplete() {
+      const now = new Date().toISOString();
+      appState.tasks.forEach(t => {
+        if (selectedTaskIds.has(t.id)) {
+          t.status = 'COMPLETED';
+          t.completedAt = now;
+        }
+      });
+      saveState(appState);
+      clearTaskSelection();
+    }
+
+    function handleBulkDelete() {
+      appState.tasks = appState.tasks.filter(t => !selectedTaskIds.has(t.id));
+      saveState(appState);
+      clearTaskSelection();
+    }
+
+    function handleBulkChangePriority(pri) {
+      if (!pri) return;
+      appState.tasks.forEach(t => {
+        if (selectedTaskIds.has(t.id)) t.priority = pri;
+      });
+      saveState(appState);
+      clearTaskSelection();
+    }
+
+    function handleBulkChangeCategory(cat) {
+      if (!cat) return;
+      appState.tasks.forEach(t => {
+        if (selectedTaskIds.has(t.id)) t.category = cat;
+      });
+      saveState(appState);
+      clearTaskSelection();
+    }
+
+    function openBulkDueDateModal() {
+      document.getElementById('bulk-duedate-modal').classList.remove('hidden');
+    }
+
+    function closeBulkDueDateModal() {
+      document.getElementById('bulk-duedate-modal').classList.add('hidden');
+    }
+
+    function applyBulkDueDate() {
+      const newDate = document.getElementById('bulk-new-duedate').value;
+      if (newDate) {
+        appState.tasks.forEach(t => {
+          if (selectedTaskIds.has(t.id)) t.dueDate = newDate;
+        });
+        saveState(appState);
+      }
+      closeBulkDueDateModal();
+      clearTaskSelection();
+    }
+
+    function duplicateTask(id) {
+      const original = appState.tasks.find(t => t.id === id);
+      if (!original) return;
+      const copy = {
+        ...original,
+        id: 'task_' + Date.now(),
+        title: `${original.title} (Copy)`,
+        status: 'TODO',
+        createdAt: new Date().toISOString()
+      };
+      delete copy.completedAt;
+      appState.tasks.unshift(copy);
+      saveState(appState);
+      renderTasksList();
+    }
+
+    function confirmDeleteTask(id) {
+      const task = appState.tasks.find(t => t.id === id);
+      if (!task) return;
+      taskPendingDeleteId = id;
+      const textEl = document.getElementById('delete-confirm-text');
+      if (textEl) textEl.textContent = `Are you sure you want to delete "${task.title}"?`;
+      const btnEl = document.getElementById('delete-confirm-btn');
+      if (btnEl) {
+        btnEl.onclick = () => {
+          appState.tasks = appState.tasks.filter(t => t.id !== taskPendingDeleteId);
+          saveState(appState);
+          closeDeleteConfirmModal();
+          renderTasksList();
+          renderDashboardTasks();
+          updateTaskCounts();
+          showToast(`Deleted task "${task.title}"`, 'info');
+        };
+      }
+      document.getElementById('delete-confirm-modal')?.classList.remove('hidden');
+      safeCreateIcons();
+    }
+
+    function closeDeleteConfirmModal() {
+      document.getElementById('delete-confirm-modal')?.classList.add('hidden');
+      taskPendingDeleteId = null;
+    }
+
+    function openTaskModal(taskId = null) {
+      const modal = document.getElementById('task-modal');
+      if (!modal) return;
+      const titleEl = document.getElementById('task-modal-title');
+      const idInput = document.getElementById('task-modal-id');
+
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val !== undefined && val !== null ? val : '';
+      };
+
+      if (taskId) {
+        const task = appState.tasks.find(t => t.id === taskId);
+        if (!task) {
+          openTaskModal(null);
+          return;
+        }
+        if (titleEl) titleEl.textContent = 'Edit Task';
+        if (idInput) idInput.value = task.id;
+        setVal('task-modal-name', task.title);
+        setVal('task-modal-desc', task.description || '');
+        setVal('task-modal-cat', task.category || 'DSA');
+        setVal('task-modal-pri', task.priority || 'MEDIUM');
+        setVal('task-modal-status', task.status || 'TODO');
+        setVal('task-modal-recurring', task.recurring || 'NONE');
+        setVal('task-modal-project', task.projectId || '');
+        setVal('task-modal-roadmap-day', task.roadmapDayId || '');
+        setVal('task-modal-due-date', task.dueDate || '2026-09-29');
+        setVal('task-modal-due-time', task.dueTime || '');
+        setVal('task-modal-est', task.estimatedTime || 45);
+        setVal('task-modal-tags', (task.tags || []).join(', '));
+      } else {
+        if (titleEl) titleEl.textContent = 'Create New Task';
+        if (idInput) idInput.value = '';
+        setVal('task-modal-name', '');
+        setVal('task-modal-desc', '');
+        setVal('task-modal-cat', 'DSA');
+        setVal('task-modal-pri', 'MEDIUM');
+        setVal('task-modal-status', 'TODO');
+        setVal('task-modal-recurring', 'NONE');
+        setVal('task-modal-project', '');
+        setVal('task-modal-roadmap-day', '');
+        setVal('task-modal-due-date', '2026-09-29');
+        setVal('task-modal-due-time', '12:00');
+        setVal('task-modal-est', '45');
+        setVal('task-modal-tags', '');
+      }
+
+      modal.classList.remove('hidden');
+      safeCreateIcons();
+      setTimeout(() => {
+        document.getElementById('task-modal-name')?.focus();
+      }, 80);
+    }
+
+    function closeTaskModal() {
+      document.getElementById('task-modal')?.classList.add('hidden');
+    }
+
+    function editTask(id) {
+      openTaskModal(id);
+    }
+
+    function saveTaskModal() {
+      const id = document.getElementById('task-modal-id')?.value || '';
+      const nameEl = document.getElementById('task-modal-name');
+      const title = nameEl ? nameEl.value.trim() : '';
+      if (!title) {
+        showToast('⚠️ Task title is required', 'error');
+        nameEl?.focus();
+        return;
+      }
+
+      const desc = document.getElementById('task-modal-desc')?.value.trim() || '';
+      const cat = document.getElementById('task-modal-cat')?.value || 'DSA';
+      const pri = document.getElementById('task-modal-pri')?.value || 'MEDIUM';
+      const status = document.getElementById('task-modal-status')?.value || 'TODO';
+      const recurring = document.getElementById('task-modal-recurring')?.value || 'NONE';
+      const project = document.getElementById('task-modal-project')?.value || '';
+      const roadmapDay = document.getElementById('task-modal-roadmap-day')?.value || '';
+      let dueDate = document.getElementById('task-modal-due-date')?.value || '';
+      if (!dueDate) dueDate = '2026-09-29';
+      const dueTime = document.getElementById('task-modal-due-time')?.value || '';
+      const est = parseInt(document.getElementById('task-modal-est')?.value || '45', 10) || 45;
+      const tagsInput = document.getElementById('task-modal-tags')?.value || '';
+      const tags = tagsInput.split(',').map(s => s.trim()).filter(Boolean);
+
+      if (id) {
+        const task = appState.tasks.find(t => t.id === id);
+        if (task) {
+          task.title = title;
+          task.description = desc;
+          task.category = cat;
+          task.priority = pri;
+          task.status = status;
+          task.recurring = recurring !== 'NONE' ? recurring : null;
+          task.projectId = project || null;
+          task.roadmapDayId = roadmapDay || null;
+          task.dueDate = dueDate;
+          task.dueTime = dueTime;
+          task.estimatedTime = est;
+          task.tags = tags;
+          if (status === 'COMPLETED' && !task.completedAt) task.completedAt = new Date().toISOString();
+          if (status !== 'COMPLETED') delete task.completedAt;
+        }
+        showToast(`✓ Task updated: "${title}"`, 'success');
+      } else {
+        const newTask = {
+          id: 'task_' + Date.now(),
+          title,
+          description: desc,
+          category: cat,
+          priority: pri,
+          status,
+          recurring: recurring !== 'NONE' ? recurring : null,
+          projectId: project || null,
+          roadmapDayId: roadmapDay || null,
+          dueDate,
+          dueTime,
+          estimatedTime: est,
+          tags,
+          createdAt: new Date().toISOString()
+        };
+        if (status === 'COMPLETED') newTask.completedAt = new Date().toISOString();
+        appState.tasks.unshift(newTask);
+        showToast(`✓ Task created: "${title}"`, 'success');
+
+        // If currently in tasks tab and the task is not today, switch tab to all so it is immediately visible!
+        if (currentTaskFilterTab === 'today' && dueDate !== '2026-09-29') {
+          filterTasksTab('all');
+        }
+      }
+
+      saveState(appState);
+      closeTaskModal();
+      renderTasksList();
+      renderDashboardTasks();
+      updateTaskCounts();
+    }
+
+    // --- NLP QUICK ADD WITH REVIEW BEFORE SAVING ---
+    function handleNlpQuickAdd() {
+      const input = document.getElementById('nlp-quick-task-input');
+      const text = (input?.value || '').trim();
+      if (!text) return;
+
+      const lower = text.toLowerCase();
+      let cat = 'DSA';
+      if (lower.includes('react') || lower.includes('useeffect') || lower.includes('css') || lower.includes('javascript') || lower.includes('node') || lower.includes('html')) {
+        cat = 'WEB_DEV';
+      } else if (lower.includes('project') || lower.includes('offboarding') || lower.includes('auth')) {
+        cat = 'PROJECT';
+      } else if (lower.includes('apply') || lower.includes('applied') || lower.includes('amazon') || lower.includes('recruiter') || lower.includes('sde') || lower.includes('job')) {
+        cat = 'JOB';
+      } else if (lower.includes('revise') || lower.includes('revision') || lower.includes('spaced repetition')) {
+        cat = 'REVISION';
+      }
+
+      const pri = lower.includes('urgent') ? 'URGENT' : (cat === 'DSA' || cat === 'JOB' ? 'HIGH' : 'MEDIUM');
+
+      // Date parsing: check days of week (e.g. "on friday", "tomorrow", "today")
+      let targetDate = '2026-09-29';
+      if (lower.includes('tomorrow')) {
+        targetDate = '2026-09-30';
+      } else if (lower.includes('friday')) {
+        targetDate = '2026-10-02';
+      } else if (lower.includes('monday')) {
+        targetDate = '2026-10-05';
+      } else if (lower.includes('wednesday')) {
+        targetDate = '2026-09-30';
+      } else if (lower.includes('thursday')) {
+        targetDate = '2026-10-01';
+      }
+
+      // Duration parsing: "for 1 hour", "45 mins"
+      let est = 45;
+      if (lower.includes('1 hour') || lower.includes('1 hr')) est = 60;
+      else if (lower.includes('2 hour') || lower.includes('2 hrs')) est = 120;
+      else if (lower.includes('30 min')) est = 30;
+
+      // Extract tags
+      const tags = [cat];
+      if (lower.includes('binary search')) tags.push('BinarySearch');
+      if (lower.includes('react')) tags.push('React');
+      if (lower.includes('useeffect')) tags.push('useEffect');
+      if (lower.includes('amazon')) tags.push('Amazon');
+      if (lower.includes('sde-1') || lower.includes('sde 1')) tags.push('SDE-1');
+
+      // Title cleanup
+      let cleanTitle = text.replace(/\s+(tomorrow|today|on\s+[a-zA-Z]+|for\s+\d+\s*(?:hours?|hrs?|mins?|minutes?))\b/gi, '').trim();
+      cleanTitle = cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1);
+
+      nlpPendingTask = {
+        title: cleanTitle,
+        rawInput: text,
+        category: cat,
+        priority: pri,
+        dueDate: targetDate,
+        estimatedTime: est,
+        tags
+      };
+
+      // Populate review modal
+      document.getElementById('nlp-review-raw-input').textContent = text;
+      document.getElementById('nlp-review-title').textContent = cleanTitle;
+      document.getElementById('nlp-review-priority').textContent = pri;
+      document.getElementById('nlp-review-priority').className = `px-2 py-0.5 rounded text-[10px] font-bold border ${pri === 'HIGH' ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'bg-blue-500/20 text-blue-400 border-blue-500/30'}`;
+      document.getElementById('nlp-review-category').textContent = cat;
+      document.getElementById('nlp-review-duedate').textContent = targetDate;
+      document.getElementById('nlp-review-est').textContent = `${est} min`;
+      document.getElementById('nlp-review-tags').textContent = tags.map(t => `#${t}`).join(' ');
+
+      document.getElementById('nlp-review-modal').classList.remove('hidden');
+      safeCreateIcons();
+    }
+
+    function closeNlpReviewModal() {
+      document.getElementById('nlp-review-modal').classList.add('hidden');
+      nlpPendingTask = null;
+    }
+
+    function confirmSaveNlpTask() {
+      if (!nlpPendingTask) return;
+      const newTask = {
+        id: 'task_' + Date.now(),
+        title: nlpPendingTask.title,
+        description: `Parsed from natural language input: "${nlpPendingTask.rawInput}"`,
+        category: nlpPendingTask.category,
+        priority: nlpPendingTask.priority,
+        status: 'TODO',
+        dueDate: nlpPendingTask.dueDate,
+        dueTime: '12:00',
+        estimatedTime: nlpPendingTask.estimatedTime,
+        tags: nlpPendingTask.tags,
+        createdAt: new Date().toISOString()
+      };
+
+      appState.tasks.unshift(newTask);
+      saveState(appState);
+      closeNlpReviewModal();
+      const input = document.getElementById('nlp-quick-task-input');
+      if (input) input.value = '';
+      showToast(`✓ AI-parsed task created: "${newTask.title}"`, 'success');
+      renderTasksList();
+      renderDashboardTasks();
+      updateTaskCounts();
+    }
+
+    // --- ROADMAP VIEW ---
+    function renderRoadmap() {
+      const matrix = document.getElementById('roadmap-micro-matrix');
+      if (matrix) {
+        matrix.innerHTML = Array.from({ length: 100 }, (_, i) => i + 1).map(num => {
+          const isToday = num === 23;
+          const isDone = num < 23;
+          return `
+            <div class="h-5 text-[10px] flex items-center justify-center rounded font-mono ${isToday ? 'bg-indigo-600 text-white font-bold ring-2 ring-indigo-400' : isDone ? 'bg-emerald-600/40 text-emerald-300 border border-emerald-500/30' : 'bg-slate-950 text-slate-600 border border-slate-800'}">
+              ${num}
+            </div>
+          `;
+        }).join('');
+      }
+
+      const container = document.getElementById('roadmap-milestones-container');
+      if (container) {
+        container.innerHTML = `
+          <div class="p-4 rounded-xl border bg-indigo-950/20 border-indigo-500/60 shadow-lg ring-1 ring-indigo-500/30 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-sm text-indigo-400">Day 23</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500 text-white font-bold uppercase">TODAY</span>
+                <span class="text-xs text-slate-400">Phase 2: Core Data Structures</span>
+              </div>
+              <span class="text-xs text-slate-400 font-mono">5.5h Target</span>
+            </div>
+            <h4 class="text-sm font-semibold text-white">Binary Search on Answer Space & React Hooks</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+                <span class="text-cyan-400 font-semibold block mb-0.5">DSA:</span>
+                <p class="text-slate-300">LC 33 Search in Rotated Sorted Array, LC 875 Koko Bananas</p>
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+                <span class="text-emerald-400 font-semibold block mb-0.5">Web Dev:</span>
+                <p class="text-slate-300">useEffect closure mechanics & custom hooks</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border bg-slate-900 border-slate-800 space-y-2 opacity-80">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-mono font-bold text-slate-400">Day 24 (Tomorrow)</span>
+              <span class="text-slate-500">Phase 2: Core Data Structures</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-200">Linked Lists Reversal & React Context State Management</h4>
+          </div>
+        `;
+      }
+    }
+
+    // --- DSA VIEW ---
+    function renderDsaTree() {
+      const container = document.getElementById('dsa-content-tree');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <h4 class="font-bold text-sm text-cyan-400">1. Arrays & Hashing (Foundation)</h4>
+              <span class="text-xs font-mono text-emerald-400">100% Mastered</span>
+            </div>
+            <p class="text-xs text-slate-400">Kadane algorithm, prefix frequency arrays, hash map direct addressing.</p>
+          </div>
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <h4 class="font-bold text-sm text-indigo-400">2. Binary Search & Monotonic Predicates (Core)</h4>
+              <span class="text-xs font-mono text-rose-400">Confidence 2/5 (Weak)</span>
+            </div>
+            <p class="text-xs text-slate-400">Rotated sorted array invariants, search-on-answer space templates.</p>
+          </div>
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <h4 class="font-bold text-sm text-purple-400">3. Dynamic Programming (Advanced)</h4>
+              <span class="text-xs font-mono text-rose-400">Confidence 1/5 (Struggling)</span>
+            </div>
+            <p class="text-xs text-slate-400">1D State transitions, Coin Change, Unbounded Knapsack.</p>
+          </div>
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <h4 class="font-bold text-sm text-amber-400">4. Hybrid FAANG Patterns</h4>
+              <span class="text-xs font-mono text-cyan-400">10 Combos</span>
+            </div>
+            <p class="text-xs text-slate-400">HashMap + Prefix Sum, Heap + HashMap, Graph + DP.</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function switchDsaSubTab(tab) {
+      document.getElementById('dsa-content-tree').classList.add('hidden');
+      document.getElementById('dsa-content-problems').classList.add('hidden');
+      document.getElementById('dsa-content-revisions').classList.add('hidden');
+
+      if (tab === 'tree') {
+        document.getElementById('dsa-content-tree').classList.remove('hidden');
+        renderDsaTree();
+      } else if (tab === 'problems') {
+        document.getElementById('dsa-content-problems').classList.remove('hidden');
+        renderDsaProblemsTable();
+      } else if (tab === 'revisions') {
+        document.getElementById('dsa-content-revisions').classList.remove('hidden');
+        renderDsaRevisions();
+      }
+    }
+
+    function renderDsaProblemsTable() {
+      const container = document.getElementById('dsa-content-problems');
+      container.innerHTML = `
+        <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/50">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-slate-900 text-slate-400 font-semibold border-b border-slate-800">
+              <tr>
+                <th class="p-3">Problem Name</th>
+                <th class="p-3">Difficulty</th>
+                <th class="p-3">Patterns</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Confidence</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800">
+              ${appState.problems.map(p => `
+                <tr class="hover:bg-slate-800/40">
+                  <td class="p-3 font-medium text-white">${p.name}</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.difficulty === 'EASY' ? 'bg-emerald-500/20 text-emerald-400' : p.difficulty === 'MEDIUM' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400'}">${p.difficulty}</span></td>
+                  <td class="p-3 text-slate-400">${p.patterns.join(', ')}</td>
+                  <td class="p-3 text-indigo-400 font-medium">${p.status}</td>
+                  <td class="p-3 font-mono font-bold ${p.confidence <= 2 ? 'text-rose-400' : 'text-emerald-400'}">${p.confidence} / 5</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderDsaRevisions() {
+      const container = document.getElementById('dsa-content-revisions');
+      container.innerHTML = `
+        <div class="p-5 bg-rose-950/20 border border-rose-500/30 rounded-2xl space-y-3">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+            <span>REVISION DUE TODAY (Adaptive SM-2 Engine)</span>
+          </h3>
+          <div class="space-y-2 text-xs">
+            <div class="p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between">
+              <div>
+                <span class="font-bold text-white">Search in Rotated Sorted Array</span>
+                <span class="text-slate-400 block mt-0.5">Binary Search • Confidence 2/5</span>
+              </div>
+              <button onclick="logProblemSolve('prob-2')" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold">Log Solve</button>
+            </div>
+            <div class="p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between">
+              <div>
+                <span class="font-bold text-white">Longest Substring Without Repeating Chars</span>
+                <span class="text-slate-400 block mt-0.5">Sliding Window • Confidence 2/5</span>
+              </div>
+              <button onclick="logProblemSolve('prob-1')" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold">Log Solve</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function pickRandomWeakProblem() {
+      const weak = appState.problems.filter(p => p.confidence <= 2);
+      const chosen = weak[Math.floor(Math.random() * weak.length)] || appState.problems[0];
+      showToast(`🎯 Weak problem focus: "${chosen.name}" (${chosen.difficulty} • Confidence: ${chosen.confidence}/5 • Topic: ${chosen.topicName})`, 'info');
+    }
+
+    function logProblemSolve(probId) {
+      const conf = prompt("How confident are you? (1=Struggled to 5=Mastered)", "4");
+      if (conf) {
+        const prob = appState.problems.find(p => p.id === probId);
+        if (prob) {
+          prob.confidence = parseInt(conf, 10);
+          prob.status = prob.confidence >= 4 ? 'MASTERED' : 'SOLVED';
+          saveState(appState);
+          showToast(`✨ Problem "${prob.name}" updated! Adaptive SM-2 interval rescheduled.`, 'success');
+          renderDsaRevisions();
+        }
+      }
+    }
+
+    // --- OTHER VIEWS PLACEHOLDERS ---
+    function renderWebDev() {
+      const container = document.getElementById('webdev-cards-container');
+      container.innerHTML = `
+        <div class="p-5 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+          <h4 class="font-bold text-sm text-white">React 18 & Ecosystem</h4>
+          <p class="text-xs text-slate-400">Virtual DOM, Hooks, Context, Stale closures, Performance.</p>
+          <div class="text-xs text-emerald-400 font-mono">10 / 14 Lessons Completed (71%)</div>
+        </div>
+        <div class="p-5 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+          <h4 class="font-bold text-sm text-white">Node.js & Express REST APIs</h4>
+          <p class="text-xs text-slate-400">Event Loop, Streams, Middleware, Error handlers, JWT.</p>
+          <div class="text-xs text-emerald-400 font-mono">7 / 10 Lessons Completed (70%)</div>
+        </div>
+        <div class="p-5 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+          <h4 class="font-bold text-sm text-white">Next.js 14 App Router</h4>
+          <p class="text-xs text-slate-400">Server vs Client Components, Server Actions, Dynamic rendering.</p>
+          <div class="text-xs text-emerald-400 font-mono">7 / 10 Lessons Completed (70%)</div>
+        </div>
+      `;
+    }
+
+    function renderProjects() {
+      const container = document.getElementById('projects-container');
+      container.innerHTML = `
+        <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold text-base text-white">Employee Offboarding Automation</h4>
+            <span class="text-xs font-mono font-bold text-violet-400 bg-violet-500/10 px-2.5 py-1 rounded-full border border-violet-500/30">58% Complete</span>
+          </div>
+          <p class="text-xs text-slate-300">Enterprise automated workflow platform revoking credentials, deprovisioning IT assets, and triggering security audits.</p>
+          <div class="p-2.5 bg-violet-950/20 border border-violet-500/20 rounded-lg text-xs text-violet-300">
+            📄 <strong>Resume:</strong> Architected automated employee offboarding platform reducing IT deprovisioning latency by 75%.
+          </div>
+        </div>
+      `;
+    }
+
+    function renderHabits() {
+      const container = document.getElementById('habits-table-container');
+      container.innerHTML = `
+        <div class="p-4 space-y-3">
+          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between text-xs">
+            <span class="font-bold text-white">Wake up before 7:00 AM</span>
+            <span class="text-amber-400 font-mono font-bold">🔥 12 day streak</span>
+          </div>
+          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between text-xs">
+            <span class="font-bold text-white">Study 4+ Hours Daily</span>
+            <span class="text-amber-400 font-mono font-bold">🔥 8 day streak</span>
+          </div>
+          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between text-xs">
+            <span class="font-bold text-white">Solve 2 DSA Problems</span>
+            <span class="text-amber-400 font-mono font-bold">🔥 6 day streak</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMood() {
+      const container = document.getElementById('mood-tracker-container');
+      container.innerHTML = `
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
+          <h4 class="text-sm font-bold text-white">Log Today's Energy & State</h4>
+          <div class="flex gap-2">
+            <button onclick="showToast('🚀 Mood logged: 5/5 Excellent energy! High focus session active.', 'success')" class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex-1 text-center hover:border-indigo-500 text-2xl cursor-pointer">🚀<div class="text-xs font-bold mt-1 text-slate-200">5 Excellent</div></button>
+            <button onclick="showToast('🙂 Mood logged: 4/5 Good energy.', 'success')" class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex-1 text-center hover:border-indigo-500 text-2xl cursor-pointer">🙂<div class="text-xs font-bold mt-1 text-slate-200">4 Good</div></button>
+            <button onclick="showToast('😐 Mood logged: 3/5 Steady progress.', 'info')" class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex-1 text-center hover:border-indigo-500 text-2xl cursor-pointer">😐<div class="text-xs font-bold mt-1 text-slate-200">3 Normal</div></button>
+          </div>
+          <div class="p-3 bg-indigo-950/20 border border-indigo-500/20 rounded-xl text-xs text-indigo-300">
+            📊 <strong>Empirical Correlation:</strong> On days you study ≥4 hours, your average mood has been 4.2/5 compared to 3.4/5 on lighter days.
+          </div>
+        </div>
+      `;
+    }
+
+    function renderJobs() {
+      const container = document.getElementById('jobs-kanban-container');
+      container.innerHTML = `
+        <div class="p-3.5 bg-slate-900/60 border border-slate-800 rounded-xl space-y-2">
+          <h4 class="text-xs font-bold uppercase text-slate-400">Wishlist (1)</h4>
+          <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-xs">
+            <span class="font-bold text-white">Atlassian</span>
+            <span class="text-slate-400 block">Grad SWE • ₹20 LPA</span>
+          </div>
+        </div>
+        <div class="p-3.5 bg-slate-900/60 border border-blue-500/30 rounded-xl space-y-2">
+          <h4 class="text-xs font-bold uppercase text-blue-400">Applied (1)</h4>
+          <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-xs">
+            <span class="font-bold text-white">Amazon</span>
+            <span class="text-slate-400 block">SDE-1 • Referral</span>
+            <span class="text-[10px] text-amber-400 font-bold block mt-1">⚠️ Follow-up due today</span>
+          </div>
+        </div>
+        <div class="p-3.5 bg-slate-900/60 border border-cyan-500/30 rounded-xl space-y-2">
+          <h4 class="text-xs font-bold uppercase text-cyan-400">OA (1)</h4>
+          <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-xs">
+            <span class="font-bold text-white">ServiceNow</span>
+            <span class="text-slate-400 block">Assoc SWE • HackerRank</span>
+          </div>
+        </div>
+        <div class="p-3.5 bg-slate-900/60 border border-indigo-500/30 rounded-xl space-y-2">
+          <h4 class="text-xs font-bold uppercase text-indigo-400">Interview (1)</h4>
+          <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-xs">
+            <span class="font-bold text-white">Uber</span>
+            <span class="text-slate-400 block">SDE-1 Backend • Round 1</span>
+          </div>
+        </div>
+        <div class="p-3.5 bg-slate-900/60 border border-emerald-500/30 rounded-xl space-y-2">
+          <h4 class="text-xs font-bold uppercase text-emerald-400">Offer (0)</h4>
+          <div class="py-8 text-center text-xs text-slate-600">Pending final rounds</div>
+        </div>
+      `;
+    }
+
+    function renderAI() {
+      const container = document.getElementById('ai-chat-container');
+      container.innerHTML = `
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
+          <div class="flex items-center gap-2 text-indigo-400">
+            <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+            <h3 class="font-bold text-white text-base">DevMentor AI Assistant</h3>
+          </div>
+          <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 leading-relaxed">
+            "Hello Nikhitha! I'm synchronized with your SDE-1 roadmap. I know you're targeting Amazon & Uber, currently on Day 1. How can I help you today?"
+          </div>
+          <div class="flex gap-2">
+            <input id="ai-quick-query" type="text" onkeydown="if(event.key === 'Enter') askDevMentor()" placeholder="Ask: 'Explain binary search invariant' or 'Quiz me on React closures'..." class="flex-1 px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+            <button onclick="askDevMentor()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold cursor-pointer">Ask Mentor</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function askDevMentor() {
+      const input = document.getElementById('ai-quick-query');
+      const val = input ? input.value.trim() : '';
+      if (!val) return;
+      showToast(`🤖 DevMentor: In "${val}", check rotated array invariant: nums[low] <= nums[mid]. Prevents 2-element edge bugs!`, 'info');
+      input.value = '';
+    }
+
+    function renderPlan() {
+      const container = document.getElementById('ai-plan-container');
+      container.innerHTML = `
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-indigo-400"></i>
+            <span>Today's Time-Blocked Schedule</span>
+          </h3>
+          <div class="space-y-2 text-xs">
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-between">
+              <span>08:30 - 09:30 • Binary Search Invariants</span>
+              <span class="text-cyan-400 font-mono font-bold">DSA</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-between">
+              <span>09:30 - 10:45 • Search in Rotated Sorted Array</span>
+              <span class="text-cyan-400 font-mono font-bold">DSA</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-between">
+              <span>11:00 - 11:30 • Amazon Recruiter Check-in</span>
+              <span class="text-blue-400 font-mono font-bold">JOB</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-between">
+              <span>14:30 - 16:00 • React Hooks Stale Closure Trap</span>
+              <span class="text-emerald-400 font-mono font-bold">WEB_DEV</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAnalytics() {
+      const container = document.getElementById('analytics-container');
+      container.innerHTML = `
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
+          <h3 class="text-lg font-bold text-white">SDE-1 Readiness Index: 78 / 100</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+            <div class="p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <span class="text-slate-400 block">DSA Accuracy</span>
+              <span class="text-emerald-400 font-bold font-mono text-base">78%</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <span class="text-slate-400 block">Avg Solve Time</span>
+              <span class="text-cyan-400 font-bold font-mono text-base">28 mins</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <span class="text-slate-400 block">Study Hours</span>
+              <span class="text-indigo-400 font-bold font-mono text-base">5.2 hrs/day</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <span class="text-slate-400 block">OA Conversion</span>
+              <span class="text-emerald-400 font-bold font-mono text-base">67%</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCalendar() {
+      const container = document.getElementById('calendar-container');
+      container.innerHTML = `
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+          <h3 class="text-base font-bold text-white">September 2026 Developer Schedule</h3>
+          <p class="text-xs text-slate-400">Integrated view of task deadlines, interviews, and spaced repetitions.</p>
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300">
+            • <strong>Sep 29 (Today):</strong> Amazon Recruiter Follow-up, 2 DSA Revisions Due.<br>
+            • <strong>Oct 02:</strong> ServiceNow HackerRank Online Assessment.<br>
+            • <strong>Oct 05:</strong> Uber SDE-1 Technical Round 1 Coding.
+          </div>
+        </div>
+      `;
+    }
+
+    function renderResume() {
+      const container = document.getElementById('resume-container');
+      container.innerHTML = `
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
+          <h3 class="text-base font-bold text-white">SDE-1 Resume & Technical Interview Suite</h3>
+          <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-2">
+            <span class="text-emerald-400 font-bold block">✨ Tailored Bullet (STAR Format):</span>
+            <p class="text-slate-300">"Architected DevTrack AI productivity engine utilizing Next.js 14, PostgreSQL/Prisma ORM, and an adaptive SuperMemo SM-2 spaced repetition algorithm."</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- POMODORO TIMER LOGIC ---
+    let timerSeconds = 25 * 60;
+    let timerRunning = false;
+    let timerInterval = null;
+
+    function setTimerPreset(work, brk) {
+      timerSeconds = work * 60;
+      timerRunning = false;
+      clearInterval(timerInterval);
+      updateTimerDisplay();
+      document.getElementById('pomodoro-toggle-btn').innerHTML = `<i data-lucide="play" class="w-5 h-5"></i><span>Start Session</span>`;
+      safeCreateIcons();
+    }
+
+    function updateTimerDisplay() {
+      const m = Math.floor(timerSeconds / 60);
+      const s = timerSeconds % 60;
+      document.getElementById('pomodoro-display').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function togglePomodoroTimer() {
+      timerRunning = !timerRunning;
+      const btn = document.getElementById('pomodoro-toggle-btn');
+      if (timerRunning) {
+        btn.innerHTML = `<i data-lucide="pause" class="w-5 h-5"></i><span>Pause</span>`;
+        timerInterval = setInterval(() => {
+          if (timerSeconds <= 1) {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            showToast("⏰ Pomodoro Finished! Log your study session.", "success");
+            return;
+          }
+          timerSeconds--;
+          updateTimerDisplay();
+        }, 1000);
+      } else {
+        btn.innerHTML = `<i data-lucide="play" class="w-5 h-5"></i><span>Resume</span>`;
+        clearInterval(timerInterval);
+      }
+      safeCreateIcons();
+    }
+
+    function resetPomodoroTimer() {
+      setTimerPreset(25, 5);
+    }
+
+    // --- COMMAND PALETTE LOGIC ---
+    const paletteCommands = [
+      { id: 'add_task', label: 'Add New Task', action: () => { switchTab('tasks'); openTaskModal(); } },
+      { id: 'start_timer', label: 'Start Pomodoro Timer', action: () => switchTab('study') },
+      { id: 'add_problem', label: 'Add DSA Problem', action: () => switchTab('dsa') },
+      { id: 'add_job', label: 'Add Job Application', action: () => switchTab('jobs') },
+      { id: 'ask_ai', label: 'Ask DevMentor AI', action: () => switchTab('ai') },
+      { id: 'view_revision', label: 'View Revisions Due Today', action: () => switchTab('dsa') },
+      { id: 'open_plan', label: "Open Today's AI Plan", action: () => switchTab('plan') },
+    ];
+
+    function openCommandPalette() {
+      document.getElementById('command-palette-modal').classList.remove('hidden');
+      document.getElementById('palette-search').value = '';
+      filterPalette();
+      safeCreateIcons();
+    }
+
+    function closeCommandPalette() {
+      document.getElementById('command-palette-modal').classList.add('hidden');
+    }
+
+    function filterPalette() {
+      const q = (document.getElementById('palette-search')?.value || '').toLowerCase();
+      const container = document.getElementById('palette-items');
+      const matches = paletteCommands.filter(c => c.label.toLowerCase().includes(q));
+
+      container.innerHTML = matches.map(c => `
+        <button onclick="executePaletteCommand('${c.id}')" class="w-full flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800 text-left text-slate-200 hover:text-white cursor-pointer">
+          <span>${c.label}</span>
+          <span class="text-[10px] text-slate-500 font-mono">EXECUTE</span>
+        </button>
+      `).join('');
+    }
+
+    function executePaletteCommand(id) {
+      closeCommandPalette();
+      const cmd = paletteCommands.find(c => c.id === id);
+      if (cmd) cmd.action();
+    }
+
+    // Global Key Listener for Cmd/Ctrl + K
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openCommandPalette();
+      }
+      if (e.key === 'Escape') {
+        closeCommandPalette();
+        closeTaskModal();
+        closeDeleteConfirmModal();
+        closeQuickActionModal();
+        closeAuthModal();
+        closeProblemModal();
+        closeBulkDueDateModal();
+        closeNlpReviewModal();
+      }
+    });
+
+    // --- QUICK ACTION MODAL ---
+    function openQuickActionModal() {
+      document.getElementById('quick-action-modal').classList.remove('hidden');
+      document.getElementById('quick-action-input').value = '';
+      document.getElementById('quick-action-preview').classList.add('hidden');
+      safeCreateIcons();
+    }
+
+    function closeQuickActionModal() {
+      document.getElementById('quick-action-modal').classList.add('hidden');
+    }
+
+    function executeQuickAction() {
+      const text = document.getElementById('quick-action-input').value.trim();
+      if (!text) return;
+
+      const lower = text.toLowerCase();
+      const todayStr = '2026-09-29';
+
+      let cat = 'DSA';
+      if (lower.includes('react') || lower.includes('node') || lower.includes('css')) cat = 'WEB_DEV';
+      else if (lower.includes('apply') || lower.includes('amazon')) cat = 'JOB';
+      else if (lower.includes('project')) cat = 'PROJECT';
+
+      appState.tasks.unshift({
+        id: 'task_' + Date.now(),
+        title: text,
+        description: 'Auto-logged via Quick Action modal',
+        category: cat,
+        priority: 'HIGH',
+        status: 'TODO',
+        dueDate: todayStr,
+        estimatedTime: 45,
+        tags: [cat]
+      });
+
+      saveState(appState);
+      closeQuickActionModal();
+      showToast(`✓ Recorded action and created task:\n"${text}"`, 'success');
+      renderDashboardTasks();
+      renderTasksList();
+      updateTaskCounts();
+    }
+
+    // --- DASHBOARD TASKS RENDERER ---
+    function renderDashboardTasks() {
+      const container = document.getElementById('dashboard-tasks-container');
+      if (!container) return;
+
+      const todayStr = '2026-09-29';
+      // Show active or today's tasks (all uncompleted tasks and today's completed tasks)
+      const activeTasks = appState.tasks.filter(t => t.status !== 'COMPLETED' || !t.dueDate || t.dueDate === todayStr);
+
+      if (activeTasks.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center border border-dashed border-slate-800 rounded-2xl bg-slate-950/40 space-y-2">
+            <i data-lucide="check-circle-2" class="w-7 h-7 mx-auto text-emerald-400"></i>
+            <p class="text-xs text-slate-300 font-medium">All tasks for today are completed! 🎉</p>
+            <p class="text-[11px] text-slate-500">Need to practice more? Add another task below.</p>
+            <button onclick="openTaskModal()" class="mt-1 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-sm">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>Add New Task</span>
+            </button>
+          </div>
+        `;
+        safeCreateIcons();
+        return;
+      }
+
+      const priColors = {
+        LOW: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
+        MEDIUM: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+        HIGH: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+        URGENT: 'bg-rose-500/10 text-rose-400 border-rose-500/30 font-bold',
+      };
+
+      const catColors = {
+        DSA: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
+        WEB_DEV: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+        PROJECT: 'bg-violet-500/10 text-violet-400 border-violet-500/30',
+        CS: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+        JOB: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+        REVISION: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
+        PERSONAL: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
+      };
+
+      container.innerHTML = activeTasks.slice(0, 6).map(t => {
+        const isDone = t.status === 'COMPLETED';
+        return `
+          <div class="p-3 bg-slate-950/70 border ${isDone ? 'border-slate-800/40 opacity-60' : 'border-slate-800 hover:border-slate-700'} rounded-xl flex items-center justify-between gap-3 transition-all">
+            <div class="flex items-center gap-3 min-w-0 flex-1">
+              <button onclick="toggleCompleteTask('${t.id}')" class="text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer flex-shrink-0" title="${isDone ? 'Reopen task' : 'Mark complete'}">
+                ${isDone ? '<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 fill-emerald-500/20"></i>' : '<i data-lucide="circle" class="w-4 h-4"></i>'}
+              </button>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-xs font-medium ${isDone ? 'line-through text-slate-500' : 'text-slate-100'} truncate">${t.title}</span>
+                  <span class="px-1.5 py-0.2 text-[10px] rounded border ${catColors[t.category] || 'border-slate-700'}">${t.category}</span>
+                  <span class="px-1.5 py-0.2 text-[10px] rounded border ${priColors[t.priority] || 'border-slate-700'}">${t.priority}</span>
+                </div>
+                ${t.estimatedTime ? `<span class="text-[10px] text-slate-500 font-mono mt-0.5 block">⏱ ${t.estimatedTime}m • ${t.dueTime ? 'Due ' + t.dueTime : 'Today'}</span>` : ''}
+              </div>
+            </div>
+            <button onclick="editTask('${t.id}')" class="p-1.5 text-slate-500 hover:text-white rounded-lg hover:bg-slate-800 transition-colors" title="Edit task">
+              <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      safeCreateIcons();
+    }
+
+    // --- TOAST NOTIFICATION ENGINE ---
+    function showToast(message, type = 'info') {
+      let container = document.getElementById('toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none';
+        document.body.appendChild(container);
+      }
+
+      const toast = document.createElement('div');
+      const bgStyles = {
+        success: 'bg-slate-900 border-emerald-500/60 text-emerald-200 shadow-emerald-950/40',
+        error: 'bg-slate-900 border-rose-500/60 text-rose-200 shadow-rose-950/40',
+        info: 'bg-slate-900 border-indigo-500/60 text-indigo-200 shadow-indigo-950/40'
+      };
+
+      toast.className = `p-3.5 rounded-xl border shadow-2xl flex items-center gap-2.5 text-xs font-medium pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 ${bgStyles[type] || bgStyles.info}`;
+      toast.innerHTML = `<span class="flex-1">${message}</span>`;
+
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // --- AUTHENTICATION & PROFILE ENGINE ---
+    function openAuthModal() {
+      const modal = document.getElementById('auth-modal');
+      if (!modal) return;
+      updateAuthModalState();
+      modal.classList.remove('hidden');
+      safeCreateIcons();
+    }
+
+    function closeAuthModal() {
+      document.getElementById('auth-modal')?.classList.add('hidden');
+    }
+
+    function switchAuthTab(tab) {
+      const signinTab = document.getElementById('auth-tab-signin');
+      const signupTab = document.getElementById('auth-tab-signup');
+      const signinContent = document.getElementById('auth-content-signin');
+      const signupContent = document.getElementById('auth-content-signup');
+
+      if (tab === 'signin') {
+        signinTab?.classList.add('text-indigo-400', 'border-indigo-500');
+        signinTab?.classList.remove('text-slate-400', 'border-transparent');
+        signupTab?.classList.remove('text-indigo-400', 'border-indigo-500');
+        signupTab?.classList.add('text-slate-400', 'border-transparent');
+        signinContent?.classList.remove('hidden');
+        signupContent?.classList.add('hidden');
+      } else {
+        signupTab?.classList.add('text-indigo-400', 'border-indigo-500');
+        signupTab?.classList.remove('text-slate-400', 'border-transparent');
+        signinTab?.classList.remove('text-indigo-400', 'border-indigo-500');
+        signinTab?.classList.add('text-slate-400', 'border-transparent');
+        signupContent?.classList.remove('hidden');
+        signinContent?.classList.add('hidden');
+      }
+    }
+
+    function handleDemoLogin() {
+      appState.profile = {
+        name: 'Nikhitha',
+        email: 'nikhitha.dev@example.com',
+        targetRole: 'Amazon SDE-1',
+        goalTitle: 'Become Amazon SDE-1 interview ready',
+        currentStreak: 0,
+        isLoggedIn: true
+      };
+      saveState(appState);
+      updateAuthUI();
+      closeAuthModal();
+      showToast('✓ Welcome back, Nikhitha! Authenticated as Demo SDE-1 candidate.', 'success');
+    }
+
+    function handleLogin(e) {
+      if (e) e.preventDefault();
+      const email = document.getElementById('auth-signin-email')?.value.trim();
+      if (!email) {
+        showToast('⚠️ Please provide an email address', 'error');
+        return;
+      }
+      const rawName = email.split('@')[0].replace(/[._-]/g, ' ');
+      const capitalized = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+
+      appState.profile = {
+        ...appState.profile,
+        name: appState.profile.name || capitalized,
+        email: email,
+        isLoggedIn: true
+      };
+      saveState(appState);
+      updateAuthUI();
+      closeAuthModal();
+      showToast(`✓ Signed in as ${appState.profile.name}`, 'success');
+    }
+
+    function handleSignUp(e) {
+      if (e) e.preventDefault();
+      const name = document.getElementById('auth-signup-name')?.value.trim();
+      const email = document.getElementById('auth-signup-email')?.value.trim();
+      const role = document.getElementById('auth-signup-role')?.value.trim() || 'Amazon SDE-1';
+
+      if (!name || !email) {
+        showToast('⚠️ Name and email are required to register', 'error');
+        return;
+      }
+
+      appState.profile = {
+        name,
+        email,
+        targetRole: role,
+        goalTitle: `Become ${role} interview ready`,
+        currentStreak: 1,
+        isLoggedIn: true
+      };
+      saveState(appState);
+      updateAuthUI();
+      closeAuthModal();
+      showToast(`✓ Account created! Welcome, ${name}!`, 'success');
+    }
+
+    function handleSignOut() {
+      if (!appState.profile) appState.profile = {};
+      appState.profile.isLoggedIn = false;
+      saveState(appState);
+      updateAuthUI();
+      closeAuthModal();
+      showToast('Signed out of DevTrack. You can sign in anytime.', 'info');
+    }
+
+    function switchAuthViewTab(tab) {
+      const signinTab = document.getElementById('auth-view-tab-signin');
+      const signupTab = document.getElementById('auth-view-tab-signup');
+      const signinForm = document.getElementById('auth-view-content-signin');
+      const signupForm = document.getElementById('auth-view-content-signup');
+
+      if (tab === 'signin') {
+        signinTab?.classList.add('text-indigo-400', 'border-indigo-500');
+        signinTab?.classList.remove('text-slate-400', 'border-transparent');
+        signupTab?.classList.remove('text-indigo-400', 'border-indigo-500');
+        signupTab?.classList.add('text-slate-400', 'border-transparent');
+        signinForm?.classList.remove('hidden');
+        signupForm?.classList.add('hidden');
+      } else {
+        signupTab?.classList.add('text-indigo-400', 'border-indigo-500');
+        signupTab?.classList.remove('text-slate-400', 'border-transparent');
+        signinTab?.classList.remove('text-indigo-400', 'border-indigo-500');
+        signinTab?.classList.add('text-slate-400', 'border-transparent');
+        signupForm?.classList.remove('hidden');
+        signinForm?.classList.add('hidden');
+      }
+      safeCreateIcons();
+    }
+
+    function handleAuthViewSignIn(e) {
+      if (e) e.preventDefault();
+      const email = document.getElementById('auth-view-signin-email')?.value.trim();
+      if (!email) {
+        showToast('⚠️ Please provide an email address', 'error');
+        return;
+      }
+      const rawName = email.split('@')[0].replace(/[._-]/g, ' ');
+      const capitalized = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+
+      appState.profile = {
+        ...appState.profile,
+        name: appState.profile.name || capitalized,
+        email: email,
+        isLoggedIn: true
+      };
+      saveState(appState);
+      updateAuthUI();
+      switchTab('dashboard');
+      showToast(`✓ Welcome back, ${appState.profile.name}! Signed in successfully.`, 'success');
+    }
+
+    function handleAuthViewSignUp(e) {
+      if (e) e.preventDefault();
+      const name = document.getElementById('auth-view-signup-name')?.value.trim();
+      const email = document.getElementById('auth-view-signup-email')?.value.trim();
+      const role = document.getElementById('auth-view-signup-role')?.value.trim() || 'Amazon SDE-1';
+
+      if (!name || !email) {
+        showToast('⚠️ Name and email are required to register', 'error');
+        return;
+      }
+
+      appState.profile = {
+        name,
+        email,
+        targetRole: role,
+        goalTitle: `Become ${role} interview ready`,
+        currentStreak: 1,
+        isLoggedIn: true
+      };
+      saveState(appState);
+      updateAuthUI();
+      switchTab('dashboard');
+      showToast(`✓ Account created! Welcome to DevTrack AI, ${name}!`, 'success');
+    }
+
+    function updateAuthViewUI() {
+      const profile = appState.profile || {};
+      const name = profile.name || 'Nikhitha';
+      const email = profile.email || 'nikhitha.dev@example.com';
+      const role = profile.targetRole || 'Amazon SDE-1';
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'NK';
+
+      const avatarEl = document.getElementById('auth-view-avatar');
+      const nameEl = document.getElementById('auth-view-name');
+      const emailEl = document.getElementById('auth-view-email');
+      if (avatarEl) avatarEl.textContent = initials;
+      if (nameEl) nameEl.textContent = name;
+      if (emailEl) emailEl.textContent = `${email} • ${role}`;
+    }
+
+    function updateAuthUI() {
+      const profile = appState.profile || {};
+      const name = profile.name || 'Nikhitha';
+      const role = profile.targetRole || 'SDE-1 Trajectory';
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'NK';
+
+      // Sidebar profile
+      const sidebarAvatar = document.getElementById('sidebar-user-avatar');
+      const sidebarName = document.getElementById('sidebar-user-name');
+      const sidebarRole = document.getElementById('sidebar-user-role');
+      if (sidebarAvatar) sidebarAvatar.textContent = initials;
+      if (sidebarName) sidebarName.textContent = name;
+      if (sidebarRole) sidebarRole.textContent = role;
+
+      // Header profile
+      const headerAvatar = document.getElementById('header-user-avatar');
+      const headerBtnText = document.getElementById('header-user-btn-text');
+      if (headerAvatar) headerAvatar.textContent = initials;
+      if (headerBtnText) headerBtnText.textContent = profile.isLoggedIn ? name : 'Sign In / Account';
+
+      // Dashboard greeting
+      const greetingEl = document.getElementById('dashboard-user-greeting');
+      if (greetingEl) greetingEl.textContent = `GOOD MORNING, ${name.toUpperCase()}`;
+
+      // Update Auth Modal & Auth View states
+      updateAuthModalState();
+      updateAuthViewUI();
+    }
+
+    function updateAuthModalState() {
+      const sessionBox = document.getElementById('auth-session-box');
+      const sessionName = document.getElementById('auth-session-name');
+      const sessionEmail = document.getElementById('auth-session-email');
+      const sessionRole = document.getElementById('auth-session-role');
+
+      if (sessionBox && sessionName && sessionEmail) {
+        if (appState.profile && appState.profile.isLoggedIn) {
+          sessionBox.classList.remove('hidden');
+          sessionName.textContent = appState.profile.name;
+          sessionEmail.textContent = appState.profile.email || 'developer@example.com';
+          if (sessionRole) sessionRole.textContent = appState.profile.targetRole || 'Amazon SDE-1';
+        } else {
+          sessionBox.classList.add('hidden');
+        }
+      }
+    }
+
+    // --- DSA PROBLEM MODAL (LOG / EDIT) ---
+    function openProblemModal(probId = null) {
+      const modal = document.getElementById('problem-modal');
+      if (!modal) return;
+      const titleEl = document.getElementById('prob-modal-title');
+      const idEl = document.getElementById('prob-modal-id');
+
+      if (probId) {
+        const p = appState.problems.find(item => item.id === probId);
+        if (!p) return;
+        if (titleEl) titleEl.textContent = 'Edit DSA Problem';
+        if (idEl) idEl.value = p.id;
+        document.getElementById('prob-modal-name').value = p.name || '';
+        document.getElementById('prob-modal-platform').value = p.platform || 'LeetCode';
+        document.getElementById('prob-modal-diff').value = p.difficulty || 'MEDIUM';
+        document.getElementById('prob-modal-topic').value = p.topicName || 'Binary Search';
+        document.getElementById('prob-modal-patterns').value = (p.patterns || []).join(', ');
+        document.getElementById('prob-modal-companies').value = (p.companyTags || []).join(', ');
+        document.getElementById('prob-modal-status').value = p.status || 'SOLVED';
+        document.getElementById('prob-modal-confidence').value = p.confidence || 3;
+        document.getElementById('prob-modal-revision').value = p.nextRevisionAt || '2026-10-02';
+        document.getElementById('prob-modal-notes').value = p.mistakes || '';
+      } else {
+        if (titleEl) titleEl.textContent = 'Log New DSA Problem';
+        if (idEl) idEl.value = '';
+        document.getElementById('prob-modal-name').value = '';
+        document.getElementById('prob-modal-platform').value = 'LeetCode';
+        document.getElementById('prob-modal-diff').value = 'MEDIUM';
+        document.getElementById('prob-modal-topic').value = 'Binary Search';
+        document.getElementById('prob-modal-patterns').value = 'Binary Search';
+        document.getElementById('prob-modal-companies').value = 'Amazon, Google';
+        document.getElementById('prob-modal-status').value = 'SOLVED';
+        document.getElementById('prob-modal-confidence').value = '3';
+        document.getElementById('prob-modal-revision').value = '2026-10-02';
+        document.getElementById('prob-modal-notes').value = '';
+      }
+
+      modal.classList.remove('hidden');
+      safeCreateIcons();
+    }
+
+    function closeProblemModal() {
+      document.getElementById('problem-modal')?.classList.add('hidden');
+    }
+
+    function saveProblemModal() {
+      const id = document.getElementById('prob-modal-id')?.value || '';
+      const name = document.getElementById('prob-modal-name')?.value.trim();
+      if (!name) {
+        showToast('⚠️ Problem name is required', 'error');
+        return;
+      }
+
+      const platform = document.getElementById('prob-modal-platform')?.value || 'LeetCode';
+      const difficulty = document.getElementById('prob-modal-diff')?.value || 'MEDIUM';
+      const topicName = document.getElementById('prob-modal-topic')?.value || 'General';
+      const patterns = (document.getElementById('prob-modal-patterns')?.value || '').split(',').map(s => s.trim()).filter(Boolean);
+      const companyTags = (document.getElementById('prob-modal-companies')?.value || '').split(',').map(s => s.trim()).filter(Boolean);
+      const status = document.getElementById('prob-modal-status')?.value || 'SOLVED';
+      const confidence = parseInt(document.getElementById('prob-modal-confidence')?.value || '3', 10);
+      const nextRevisionAt = document.getElementById('prob-modal-revision')?.value || '2026-10-02';
+      const mistakes = document.getElementById('prob-modal-notes')?.value.trim() || '';
+
+      if (id) {
+        const p = appState.problems.find(item => item.id === id);
+        if (p) {
+          p.name = name;
+          p.platform = platform;
+          p.difficulty = difficulty;
+          p.topicName = topicName;
+          p.patterns = patterns;
+          p.companyTags = companyTags;
+          p.status = status;
+          p.confidence = confidence;
+          p.nextRevisionAt = nextRevisionAt;
+          p.mistakes = mistakes;
+        }
+        showToast(`✓ Updated problem: "${name}"`, 'success');
+      } else {
+        const newProb = {
+          id: 'prob-' + Date.now(),
+          name,
+          platform,
+          difficulty,
+          topicName,
+          patterns,
+          companyTags,
+          status,
+          confidence,
+          nextRevisionAt,
+          mistakes
+        };
+        appState.problems.unshift(newProb);
+        showToast(`✓ Logged problem: "${name}"`, 'success');
+      }
+
+      saveState(appState);
+      closeProblemModal();
+      renderDsaProblemsTable();
+      renderDsaRevisions();
+    }
+
+    // --- INITIAL BOOTSTRAP ---
+    window.addEventListener('DOMContentLoaded', () => {
+      updateAuthUI();
+      updateTaskCounts();
+      switchTab('dashboard');
+    });
+  </script>
+</body>
+</html>
